@@ -35,6 +35,14 @@ export function middleware(request: NextRequest) {
   const hostname =
     request.nextUrl.hostname.toLowerCase().replace(/\.$/, '') ||
     host.split(':')[0].toLowerCase()
+
+  // Root-scoped browser assets must not enter the clean console rewrite. On
+  // console.successcodeacademy.in, rewriting /sw.js to /admin/sw.js causes
+  // Next to serve the app's HTML 404 page instead of the worker script.
+  if (pathname === '/sw.js' || pathname === '/manifest.webmanifest') {
+    return NextResponse.next()
+  }
+
   // Check if request is accessing via console subdomain (production or local test)
   const isConsoleSubdomain =
     hostname === 'console.successcodeacademy.in' ||

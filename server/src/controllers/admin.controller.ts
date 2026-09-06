@@ -34,7 +34,11 @@ import { ADMIN, SUPER_ADMIN } from '../config/roles';
 import bcrypt from 'bcrypt';
 import { AppError } from '../utils/AppError';
 import logger from '../utils/logger';
-import { sendMail } from '../utils/mailer';
+import {
+  normalizeNotificationRecipients,
+  sendMail,
+  sendNotificationRecipientWelcome,
+} from '../utils/mailer';
 import { adminPasswordResetEmail, contactFormStaffAlert } from '../utils/emailTemplates';
 import {
   buildResetUrl,
@@ -731,6 +735,16 @@ export const updateSettings = asyncHandler(async (req: Request, res: Response) =
       403,
     );
   }
+  const isRecipientUpdate = Object.prototype.hasOwnProperty.call(body, 'notification_recipients');
+  let previousRecipients: string[] = [];
+  if (isRecipientUpdate) {
+    const previousSetting = await SiteSetting.findOne({
+      where: { key: 'notification_recipients' },
+    });
+    previousRecipients = previousSetting
+      ? normalizeNotificationRecipients(previousSetting.value)
+      : [];
+  }
   const rows: Array<{ key: string; value: string }> = [];
 
   for (const key of SETTINGS_KEYS) {
@@ -742,6 +756,30 @@ export const updateSettings = asyncHandler(async (req: Request, res: Response) =
   if (rows.length > 0) {
     await SiteSetting.bulkCreate(rows, {
       updateOnDuplicate: ['value', 'updatedAt'],
+    });
+  }
+
+  if (isRecipientUpdate && rows.some((row) => row.key === 'notification_recipients')) {
+    const newRecipients = normalizeNotificationRecipients(
+      String(body.notification_recipients ?? ''),
+    );
+    const previousSet = new Set(previousRecipients);
+    const addedRecipients = newRecipients.filter((email) => !previousSet.has(email));
+
+    // The setting is already persisted. Delivery is deliberately detached so a
+    // provider outage never delays or changes the successful settings update.
+    void Promise.all(
+      addedRecipients.map(async (to) => {
+        const result = await sendNotificationRecipientWelcome(to);
+        if (!result.delivered) {
+          logger.warn('[Mail] Could not send internal recipient onboarding email.', {
+            to,
+            error: result.error,
+          });
+        }
+      }),
+    ).catch((error) => {
+      logger.warn('[Mail] Internal recipient onboarding failed.', { error });
     });
   }
 

@@ -4,6 +4,7 @@ import path from 'node:path';
 import logger from './logger';
 import { env, appBaseUrl } from '../config/environment';
 import { SiteSetting } from '../models';
+import { internalNotificationRecipientWelcome } from './emailTemplates';
 
 /**
  * Resend-backed outbound email.
@@ -35,6 +36,14 @@ export type MailMessage = {
 const NOTIFICATION_RECIPIENTS_KEY = 'notification_recipients';
 const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/** Normalize the setting format into unique, case-insensitive email addresses. */
+export function normalizeNotificationRecipients(raw: string): string[] {
+  return raw
+    .split(/[\s,;]+/)
+    .map((email) => email.trim().toLowerCase())
+    .filter((email, index, values) => EMAIL_SHAPE.test(email) && values.indexOf(email) === index);
+}
+
 /**
  * Read the current staff notification destinations. A missing setting means
  * this install has never configured destinations, so retain the bootstrap
@@ -46,10 +55,7 @@ export async function getNotificationRecipients(): Promise<string[]> {
   try {
     const setting = await SiteSetting.findOne({ where: { key: NOTIFICATION_RECIPIENTS_KEY } });
     const raw = setting === null ? env.SUPER_ADMIN_EMAIL : setting.value;
-    return raw
-      .split(/[\s,;]+/)
-      .map((email) => email.trim().toLowerCase())
-      .filter((email, index, values) => EMAIL_SHAPE.test(email) && values.indexOf(email) === index);
+    return normalizeNotificationRecipients(raw);
   } catch (error) {
     // Notification delivery is best-effort. If settings cannot be read, keep
     // existing installs safe by using the bootstrap address.
@@ -241,6 +247,17 @@ export async function sendMailToRecipients(
 ): Promise<MailResult[]> {
   const recipients = await getNotificationRecipients();
   return Promise.all(recipients.map((to) => sendMail({ ...message, to })));
+}
+
+/** Send the one-time operational notice to a newly configured recipient. */
+export async function sendNotificationRecipientWelcome(to: string): Promise<MailResult> {
+  const content = internalNotificationRecipientWelcome();
+  return sendMail({
+    to,
+    subject: 'You were added to Success Code Academy internal alerts',
+    text: content.text,
+    html: content.html,
+  });
 }
 
 /** Public website origin for links rendered inside email bodies. */
