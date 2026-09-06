@@ -16,6 +16,7 @@ import {
   AcademyVideo,
   Course,
   ScholarshipProgram,
+  AdminActivityLog,
   sequelize,
 } from '../models';
 import type {
@@ -1084,6 +1085,67 @@ type ActivityRow = {
   school: string | null;
   createdAt: Date;
 };
+
+type AdminActivityLogRow = {
+  id: number; adminId: number; adminEmail: string; adminRole: string;
+  action: string; resource: string; resourceId: string | null; method: string;
+  route: string; summary: string; metadata: Record<string, unknown> | null;
+  createdAt: Date;
+};
+
+const ADMIN_LOG_SORT_COLUMNS: Record<string, string> = {
+  createdAt: 'createdAt', adminEmail: 'adminEmail', adminRole: 'adminRole',
+  action: 'action', resource: 'resource',
+};
+
+function getAdminActivityLogOptions(req: Request) {
+  const q = String(req.query.q || '').trim();
+  const page = Number(req.query.page || 1);
+  const requestedLimit = Number(req.query.limit || 25);
+  const limit = [10, 25, 50].includes(requestedLimit) ? requestedLimit : 25;
+  const where: Record<string | symbol, unknown> = {};
+  if (q) where[Op.or] = [
+    { adminEmail: { [Op.iLike]: `%${q}%` } },
+    { action: { [Op.iLike]: `%${q}%` } },
+    { resource: { [Op.iLike]: `%${q}%` } },
+    { summary: { [Op.iLike]: `%${q}%` } },
+  ];
+  if (req.query.adminId) where.adminId = Number(req.query.adminId);
+  if (req.query.role) where.adminRole = String(req.query.role);
+  if (req.query.action) where.action = String(req.query.action);
+  if (req.query.resource) where.resource = String(req.query.resource);
+  const dates: Record<string | symbol, unknown> = {};
+  if (req.query.dateFrom) dates[Op.gte] = new Date(String(req.query.dateFrom));
+  if (req.query.dateTo) {
+    const raw = String(req.query.dateTo); const date = new Date(raw);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) date.setUTCHours(23, 59, 59, 999);
+    dates[Op.lte] = date;
+  }
+  if (Object.keys(dates).length) where.createdAt = dates;
+  const sortBy = String(req.query.sortBy || 'createdAt');
+  const direction = String(req.query.sortDirection || 'DESC').toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+  return { where, page: Math.max(page, 1), limit, order: [[ADMIN_LOG_SORT_COLUMNS[sortBy] || 'createdAt', direction]] as any };
+}
+
+export const getAdminActivityLogs = asyncHandler(async (req: Request, res: Response) => {
+  const options = getAdminActivityLogOptions(req);
+  const result = await AdminActivityLog.findAndCountAll({ where: options.where, order: options.order, limit: options.limit, offset: (options.page - 1) * options.limit });
+  const adminIds = [...new Set(result.rows.map((row) => row.adminId))];
+  const admins = await Admin.findAll({ where: { id: adminIds }, attributes: ['id', 'name'] });
+  const names = new Map(admins.map((admin) => [admin.id, admin.name]));
+  const data = result.rows.map((row) => ({ ...row.toJSON(), adminName: names.get(row.adminId) || null }));
+  res.status(200).json({ status: 'success', data, pagination: { page: options.page, limit: options.limit, total: result.count, totalPages: Math.ceil(result.count / options.limit), hasMore: options.page * options.limit < result.count, nextCursor: null } });
+});
+
+export const exportAdminActivityLogs = asyncHandler(async (req: Request, res: Response) => {
+  const options = getAdminActivityLogOptions(req);
+  const rows = await AdminActivityLog.findAll({ where: options.where, order: options.order });
+  const headers = ['id', 'adminId', 'adminEmail', 'adminRole', 'action', 'resource', 'resourceId', 'method', 'route', 'summary', 'before', 'after', 'createdAt'];
+  const csv = [headers, ...rows.map((row) => headers.map((header) => (row as unknown as Record<string, unknown>)[header]))].map((values) => values.map(csvCell).join(',')).join('\r\n');
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', `attachment; filename="admin-activity-logs-${new Date().toISOString().slice(0, 10)}.csv"`);
+  res.status(200).send(`\uFEFF${csv}`);
+});
 
 const ACTIVITY_SORT_COLUMNS: Record<string, string> = {
   id: 'id', createdAt: 'createdAt', name: 'name', email: 'email',

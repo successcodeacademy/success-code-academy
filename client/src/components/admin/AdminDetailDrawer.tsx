@@ -40,6 +40,7 @@ export type AdminDetailDrawerProps = {
   email?: string;
   phone?: string;
   fields?: AdminDrawerField[];
+  changeReview?: React.ReactNode;
   message?: {
     title?: string;
     content: string;
@@ -74,6 +75,7 @@ export default function AdminDetailDrawer({
   email,
   phone,
   fields = [],
+  changeReview,
   message,
   imagePreview,
   externalLink,
@@ -86,7 +88,7 @@ export default function AdminDetailDrawer({
 }: AdminDetailDrawerProps) {
   const [copiedAll, setCopiedAll] = useState(false);
   const [copiedMessage, setCopiedMessage] = useState(false);
-  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
 
   // Close on Escape key press
   useEffect(() => {
@@ -139,13 +141,13 @@ export default function AdminDetailDrawer({
     });
   }, [message]);
 
-  const handleCopyEmail = useCallback(() => {
-    if (!email) return;
-    navigator.clipboard.writeText(email).then(() => {
-      setCopiedEmail(true);
-      setTimeout(() => setCopiedEmail(false), 2000);
+  const handleCopyEmail = useCallback((emailValue: string) => {
+    if (!emailValue) return;
+    navigator.clipboard.writeText(emailValue).then(() => {
+      setCopiedEmail(emailValue);
+      setTimeout(() => setCopiedEmail(null), 2000);
     });
-  }, [email]);
+  }, []);
 
   const displayFields = useMemo<AdminDrawerField[]>(() => {
     const list: AdminDrawerField[] = [...fields];
@@ -377,11 +379,11 @@ export default function AdminDetailDrawer({
                           {isValidEmail && (
                             <button
                               type="button"
-                              className="admin-drawer-message-copy-btn"
-                              onClick={handleCopyEmail}
+                              className={`admin-drawer-message-copy-btn ${copiedEmail === emailVal ? "is-copied" : ""}`}
+                              onClick={() => handleCopyEmail(emailVal)}
                               title="Copy email address"
                             >
-                              {copiedEmail ? (
+                              {copiedEmail === emailVal ? (
                                 <>
                                   <Check size={11} aria-hidden="true" />
                                   <span>Copied</span>
@@ -418,6 +420,8 @@ export default function AdminDetailDrawer({
               </div>
             </div>
           )}
+
+          {changeReview}
 
           {/* Inquiry Message Card */}
           {message?.content && (

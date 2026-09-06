@@ -3,6 +3,7 @@ import { authenticate } from '../../middlewares/authenticate';
 import { authorize } from '../../middlewares/authorize';
 import { validate } from '../../middlewares/validate';
 import { ADMIN_ROLES, SUPER_ADMIN } from '../../config/roles';
+import { activityLogger } from '../../middlewares/activityLogger';
 import * as controller from '../../controllers/notification.controller';
 import {
   notificationAdminIdParamsSchema,
@@ -14,6 +15,7 @@ import {
 
 const router = Router();
 router.use(authenticate, authorize(...ADMIN_ROLES));
+router.use(activityLogger);
 router.post('/subscriptions', validate(notificationSubscriptionSchema), controller.subscribe);
 router.delete('/subscriptions', validate(notificationUnsubscribeSchema), controller.unsubscribe);
 router.get('/status', controller.status);

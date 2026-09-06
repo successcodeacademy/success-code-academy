@@ -276,6 +276,20 @@ export const leadExportQuerySchema = activityListQuerySchema
   })
   .strict();
 
+export const adminActivityLogQuerySchema = z.object({
+  q: z.string().trim().max(120).optional().default(''),
+  page: z.coerce.number().int().positive().optional().default(1),
+  limit: z.coerce.number().int().min(1).max(50).optional().default(25),
+  sortBy: z.enum(['createdAt', 'adminEmail', 'adminRole', 'action', 'resource']).optional().default('createdAt'),
+  sortDirection: z.enum(['asc', 'desc', 'ASC', 'DESC']).optional().default('desc'),
+  dateFrom: z.coerce.date().optional(),
+  dateTo: z.coerce.date().optional(),
+  adminId: z.coerce.number().int().positive().optional(),
+  role: z.enum(['admin', 'super-admin']).optional(),
+  action: z.string().trim().max(40).optional(),
+  resource: z.string().trim().max(80).optional(),
+}).strict();
+
 export const resultListQuerySchema = z
   .object({
     year: z.coerce.number().int().min(2000).max(2100).optional(),

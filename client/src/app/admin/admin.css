@@ -2644,6 +2644,118 @@ div.admin-dash-empty {
   .admin-dash-pagination { width:100%; justify-content:flex-end; margin-left:0; }
 }
 
+.admin-activity-log-panel .admin-dash-table td[data-label="Summary"] {
+  overflow-wrap: anywhere;
+}
+
+.admin-activity-log-panel .admin-dash-table td[data-label="Administrator"] small {
+  display: block;
+  color: var(--admin-muted);
+  font-size: 0.72rem;
+  margin-top: 2px;
+}
+
+.admin-activity-log-panel .admin-dash-table td[data-label="Administrator"] {
+  min-width: 150px;
+}
+
+.admin-activity-log-panel .admin-activity-admin-name {
+  display: block;
+  font-weight: 600;
+  color: var(--admin-text);
+}
+
+.admin-mobile-record-value.is-case-sensitive {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.admin-drawer-message-copy-btn.is-copied {
+  color: #047857;
+  border-color: #34d399;
+  background: rgba(5, 150, 105, 0.1);
+}
+
+@media (max-width:640px) {
+  .admin-activity-log-panel .admin-dash-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0 12px;
+    padding: 12px;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td {
+    display: block;
+    min-width: 0;
+    padding: 5px 0;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td::before {
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Date"] {
+    grid-column: 1 / -1;
+    padding-bottom: 9px;
+    border-bottom: 1px solid var(--admin-divider);
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Administrator"],
+  .admin-activity-log-panel .admin-dash-table td[data-label="Summary"] {
+    grid-column: 1 / -1;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Action"],
+  .admin-activity-log-panel .admin-dash-table td[data-label="Resource"] {
+    align-self: center;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td.admin-dash-action-cell {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 7px;
+    padding-top: 9px;
+    border-top: 1px solid var(--admin-divider);
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Administrator"] small {
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Summary"] {
+    padding-bottom: 3px;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Date"] {
+    font-size: 0.8rem;
+    color: var(--admin-muted);
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Summary"] {
+    display: block;
+    padding-top: 6px;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Summary"]::before {
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .admin-activity-log-panel .admin-dash-footer {
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .admin-activity-log-panel .admin-dash-pagination {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
 /* --- Dark Theme Overrides --- */
 html[data-admin-theme="dark"] .admin-dash-header-icon {
   background: #0f223f;
@@ -3037,6 +3149,122 @@ html[data-admin-theme="dark"] .admin-dash-pill.is-messages {
   word-break: normal;
   border-left: 3px solid var(--admin-brand);
 }
+
+.admin-change-review-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--admin-brand);
+}
+
+.admin-change-review-caption {
+  margin: -4px 0 0;
+  color: var(--admin-muted);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.admin-change-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.admin-change-item {
+  overflow: hidden;
+  border: 1px solid var(--admin-border);
+  border-left: 3px solid var(--admin-brand);
+  border-radius: var(--admin-radius-sm);
+  background: var(--admin-surface-sunken);
+}
+
+.admin-change-item.is-added { border-left-color: #059669; }
+.admin-change-item.is-removed { border-left-color: #dc2626; }
+
+.admin-change-item-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  color: var(--admin-text);
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.admin-change-kind {
+  flex-shrink: 0;
+  color: var(--admin-brand);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.is-added .admin-change-kind { color: #059669; }
+.is-removed .admin-change-kind { color: #dc2626; }
+
+.admin-change-values {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 7px;
+  padding: 0 10px 10px;
+}
+
+.admin-change-value {
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-xs);
+  background: var(--admin-surface);
+}
+
+.admin-change-value.is-before { background: rgba(220, 38, 38, 0.045); }
+.admin-change-value.is-after { background: rgba(5, 150, 105, 0.055); }
+
+.admin-change-value-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--admin-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-change-value code {
+  display: block;
+  max-height: 150px;
+  overflow: auto;
+  color: var(--admin-text);
+  font: inherit;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.admin-change-arrow {
+  align-self: center;
+  color: var(--admin-muted);
+}
+
+.admin-change-empty {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px;
+  border: 1px dashed var(--admin-border-strong);
+  border-radius: var(--admin-radius-sm);
+  color: var(--admin-muted);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.admin-change-empty.is-added { color: #047857; background: rgba(5, 150, 105, 0.06); }
+.admin-change-empty.is-removed { color: #b91c1c; background: rgba(220, 38, 38, 0.05); }
 
 .admin-drawer-message-actions {
   display: flex;
@@ -5784,6 +6012,15 @@ html[data-admin-theme]::-webkit-scrollbar-track {
   .admin-drawer-message-header {
     align-items: flex-start;
     flex-wrap: wrap;
+  }
+
+  .admin-drawer-email-val {
+    align-items: flex-start;
+  }
+
+  .admin-drawer-email-val .admin-drawer-message-copy-btn {
+    flex: 0 0 auto;
+    min-height: 28px;
   }
 
   .admin-modal-body {
