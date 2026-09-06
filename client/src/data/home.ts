@@ -68,7 +68,7 @@ export const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Courses", href: "/courses" },
-  { label: "Scholarships", href: "/admissions" },
+  { label: "Admissions", href: "/admissions" },
   { label: "Results", href: "/results" },
   { label: "Contact", href: "/contact" },
 ];
