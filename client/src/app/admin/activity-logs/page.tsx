@@ -28,10 +28,26 @@ type LogRow = {
 type ChangeKind = "changed" | "added" | "removed";
 type Change = { path: string; before: unknown; after: unknown; kind: ChangeKind };
 
-const IGNORED_SNAPSHOT_FIELDS = new Set(["createdAt", "updatedAt"]);
+const IGNORED_SNAPSHOT_FIELDS = new Set([
+  "createdAt", "updatedAt", "changed", "isNewRecord", "options", "previousDataValues",
+  "rawAttributes", "sequelize", "uniqno", "validated", "validators",
+]);
+
+function isTechnicalSnapshotField(key: string): boolean {
+  return IGNORED_SNAPSHOT_FIELDS.has(key) || IGNORED_SNAPSHOT_FIELDS.has(key.toLowerCase()) || /^(options|schema|attributes|dataValues|_changed|_options|validators|fields)$/i.test(key);
+}
+
+const FIELD_LABELS: Record<string, string> = {
+  altText: "Image description", colorHex: "Display color", contentKey: "Content section",
+  externalUrl: "Article link", image: "Image", isActive: "Visible on website",
+  mobileNumber: "Mobile number", orderIndex: "Display order", pageKey: "Website page",
+  scholarshipProgram: "Scholarship program", shortTitle: "Short title",
+  studentClass: "Student class", studentEmail: "Student email", studentName: "Student name",
+  studentPhone: "Student phone", targetUrl: "Link destination", videoUrl: "Video link",
+};
 
 function prettyLabel(path: string): string {
-  return path.split(".").map((part) => part.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[-_]/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())).join(" / ");
+  return path.split(".").map((part) => FIELD_LABELS[part] || part.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[-_]/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase())).join(" / ");
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -39,6 +55,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function flattenSnapshot(value: unknown, path = "", output: Map<string, unknown> = new Map()): Map<string, unknown> {
+  if (path && isTechnicalSnapshotField(path.split(".").at(-1) || path)) return output;
   if (value === null || value === undefined) {
     if (path) output.set(path, value);
     return output;
@@ -54,8 +71,12 @@ function flattenSnapshot(value: unknown, path = "", output: Map<string, unknown>
     return output;
   }
   if (isRecord(value)) {
-    const entries = Object.entries(value).filter(([key]) => !IGNORED_SNAPSHOT_FIELDS.has(key));
-    if (!entries.length && path) output.set(path, value);
+    // Older audit entries may contain a serialized Sequelize instance. Its
+    // dataValues member is the actual database record; everything else is ORM
+    // bookkeeping that staff should never see.
+    if (isRecord(value.dataValues)) return flattenSnapshot(value.dataValues, path, output);
+    const entries = Object.entries(value).filter(([key]) => !isTechnicalSnapshotField(key));
+    if (!entries.length && path && !isTechnicalSnapshotField(path.split(".").at(-1) || path)) output.set(path, value);
     entries.forEach(([key, item]) => flattenSnapshot(item, path ? `${path}.${key}` : key, output));
     return output;
   }
@@ -127,6 +148,18 @@ function formatDate(value: string): string {
 
 function titleCase(value: string): string {
   return value.split("-").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
+}
+
+function activityLabel(action: string, resource: string): string {
+  const resources: Record<string, string> = {
+    notification: "announcement", "site-setting": "site settings", "star-student": "star student",
+    "news-article": "news article", "academy-video": "academy video", "admin-account": "administrator account",
+    "content-block": "website content", "course-form": "course enquiry", "scholarship-form": "scholarship form",
+    "contact-message": "contact message", "scholarship-program": "scholarship program", banner: "banner",
+    result: "result", course: "course", student: "student", media: "media",
+  };
+  const actions: Record<string, string> = { create: "Added", update: "Updated", delete: "Deleted", restore: "Restored", upload: "Uploaded" };
+  return `${actions[action] || titleCase(action)} ${resources[resource] || resource.replace(/-/g, " ")}`;
 }
 
 export default function AdminActivityLogsPage() {
@@ -209,7 +242,7 @@ export default function AdminActivityLogsPage() {
     { label: "Administrator", value: selected.adminName || "Former administrator" },
     { label: "Role", value: titleCase(selected.adminRole) },
     { label: "Email", value: selected.adminEmail, fullWidth: true, isEmail: true },
-    { label: "Activity", value: `${titleCase(selected.action)} ${titleCase(selected.resource)}`, fullWidth: true },
+    { label: "Activity", value: activityLabel(selected.action, selected.resource), fullWidth: true },
   ] : [], [selected]);
 
   return (
@@ -229,10 +262,10 @@ export default function AdminActivityLogsPage() {
             <button type="button" className="admin-button secondary" onClick={exportLogs} disabled={exporting}><Download size={14} /> {exporting ? "Exporting..." : "Export CSV"}</button>
           </div>
         </header>
-        {loading ? <AdminTableSkeleton rows={6} columns={6} /> : <div className="admin-dash-table-wrap"><table className="admin-dash-table"><thead><tr><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("createdAt")}>Date {sortIcon("createdAt")}</button></th><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("adminEmail")}>Administrator {sortIcon("adminEmail")}</button></th><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("action")}>Action {sortIcon("action")}</button></th><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("resource")}>Resource {sortIcon("resource")}</button></th><th>Summary</th><th className="admin-dash-action-heading">Action</th></tr></thead><tbody>{rows.length === 0 ? <tr><td colSpan={6} className="admin-dash-empty">No activity logs found.</td></tr> : rows.map((row) => <tr key={row.id} className="admin-dash-row" onClick={() => setSelected(row)}><td data-label="Date">{formatDate(row.createdAt)}</td><td data-label="Administrator">{row.adminName || "Former administrator"}<small>{row.adminEmail} · {titleCase(row.adminRole)}</small></td><td data-label="Action"><span className="admin-dash-pill is-courses">{titleCase(row.action)}</span></td><td data-label="Resource">{titleCase(row.resource)}</td><td data-label="Summary">{titleCase(row.action)} {titleCase(row.resource)}</td><td className="admin-dash-action-cell"><button type="button" className="admin-dash-link-btn" onClick={(event) => { event.stopPropagation(); setSelected(row); }}>View &rarr;</button></td></tr>)}</tbody></table></div>}
+        {loading ? <AdminTableSkeleton rows={6} columns={6} /> : <div className="admin-dash-table-wrap"><table className="admin-dash-table"><thead><tr><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("createdAt")}>Date {sortIcon("createdAt")}</button></th><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("adminEmail")}>Administrator {sortIcon("adminEmail")}</button></th><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("action")}>Action {sortIcon("action")}</button></th><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("resource")}>Resource {sortIcon("resource")}</button></th><th>Summary</th><th className="admin-dash-action-heading">Action</th></tr></thead><tbody>{rows.length === 0 ? <tr><td colSpan={6} className="admin-dash-empty">No activity logs found.</td></tr> : rows.map((row) => <tr key={row.id} className="admin-dash-row" onClick={() => setSelected(row)}><td data-label="Date">{formatDate(row.createdAt)}</td><td data-label="Administrator"><span className="admin-activity-admin-name">{row.adminName || "Former administrator"}</span><small>{row.adminEmail} · {titleCase(row.adminRole)}</small></td><td data-label="Action"><span className="admin-dash-pill is-courses">{titleCase(row.action)}</span></td><td data-label="Resource">{titleCase(row.resource)}</td><td data-label="Summary">{activityLabel(row.action, row.resource)}</td><td className="admin-dash-action-cell"><button type="button" className="admin-dash-link-btn" onClick={(event) => { event.stopPropagation(); setSelected(row); }}>View &rarr;</button></td></tr>)}</tbody></table></div>}
         <footer className="admin-dash-footer"><span>Showing {rows.length ? (page - 1) * pageSize + 1 : 0}-{Math.min(page * pageSize, total)} of {total} activity logs</span><div className="admin-dash-pagination admin-pagination-controls"><label>Rows <select value={pageSize} onChange={(event) => changePageSize(Number(event.target.value))}><option value={10}>10</option><option value={25}>25</option><option value={50}>50</option></select></label><button type="button" className="admin-icon-button" disabled={page <= 1 || loading} onClick={() => setPage((value) => value - 1)} aria-label="Previous page"><ChevronLeft size={15} /></button>{Array.from({ length: totalPages }, (_, index) => index + 1).slice(Math.max(0, page - 3), page + 2).map((number) => <button type="button" key={number} className={`admin-dash-page-number ${page === number ? "is-active" : ""}`} onClick={() => setPage(number)}>{number}</button>)}<button type="button" className="admin-icon-button" disabled={page >= totalPages || loading} onClick={() => setPage((value) => value + 1)} aria-label="Next page"><ChevronRight size={15} /></button></div></footer>
       </section>
-      {selected && <AdminDetailDrawer open onClose={() => setSelected(null)} badge={{ label: "Activity log", variant: "messages" }} title={`${titleCase(selected.action)} ${titleCase(selected.resource)}`} avatarText={(selected.adminName || selected.adminEmail).charAt(0).toUpperCase()} timestamp={formatDate(selected.createdAt)} fields={drawerFields} changeReview={<ChangeReview log={selected} />} />}
+      {selected && <AdminDetailDrawer open onClose={() => setSelected(null)} badge={{ label: "Activity log", variant: "messages" }} title={activityLabel(selected.action, selected.resource)} avatarText={(selected.adminName || selected.adminEmail).charAt(0).toUpperCase()} timestamp={formatDate(selected.createdAt)} fields={drawerFields} email={selected.adminEmail} changeReview={<ChangeReview log={selected} />} />}
     </div>
   );
 }

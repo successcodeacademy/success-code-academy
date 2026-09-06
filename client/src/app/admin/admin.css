@@ -2655,7 +2655,81 @@ div.admin-dash-empty {
   margin-top: 2px;
 }
 
+.admin-activity-log-panel .admin-dash-table td[data-label="Administrator"] {
+  min-width: 150px;
+}
+
+.admin-activity-log-panel .admin-activity-admin-name {
+  display: block;
+  font-weight: 600;
+  color: var(--admin-text);
+}
+
+.admin-mobile-record-value.is-case-sensitive {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.admin-drawer-message-copy-btn.is-copied {
+  color: #047857;
+  border-color: #34d399;
+  background: rgba(5, 150, 105, 0.1);
+}
+
 @media (max-width:640px) {
+  .admin-activity-log-panel .admin-dash-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0 12px;
+    padding: 12px;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td {
+    display: block;
+    min-width: 0;
+    padding: 5px 0;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td::before {
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Date"] {
+    grid-column: 1 / -1;
+    padding-bottom: 9px;
+    border-bottom: 1px solid var(--admin-divider);
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Administrator"],
+  .admin-activity-log-panel .admin-dash-table td[data-label="Summary"] {
+    grid-column: 1 / -1;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Action"],
+  .admin-activity-log-panel .admin-dash-table td[data-label="Resource"] {
+    align-self: center;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td.admin-dash-action-cell {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 7px;
+    padding-top: 9px;
+    border-top: 1px solid var(--admin-divider);
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Administrator"] small {
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Summary"] {
+    padding-bottom: 3px;
+  }
+
   .admin-activity-log-panel .admin-dash-table td[data-label="Date"] {
     font-size: 0.8rem;
     color: var(--admin-muted);
@@ -5938,6 +6012,15 @@ html[data-admin-theme]::-webkit-scrollbar-track {
   .admin-drawer-message-header {
     align-items: flex-start;
     flex-wrap: wrap;
+  }
+
+  .admin-drawer-email-val {
+    align-items: flex-start;
+  }
+
+  .admin-drawer-email-val .admin-drawer-message-copy-btn {
+    flex: 0 0 auto;
+    min-height: 28px;
   }
 
   .admin-modal-body {

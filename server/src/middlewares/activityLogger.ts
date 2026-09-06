@@ -1,9 +1,11 @@
 import type { NextFunction, Request, Response } from 'express';
 import type { Model } from 'sequelize';
 import {
-  AcademyVideo, Admin, AdminActivityLog, Banner, ContactMessage, ContentBlock,
-  Course, CourseRegistration, NewsArticle, Notification, ScholarshipProgram,
-  ScholarshipRegistration, SiteSetting, StarStudent, TopperResult, User,
+  AcademyVideo, Admin, AdminActivityLog, AdminNotification,
+  AdminNotificationPreference, AdminPushSubscription, Banner, ContactMessage,
+  ContentBlock, Course, CourseRegistration, NewsArticle, Notification,
+  ScholarshipProgram, ScholarshipRegistration, SiteSetting, StarStudent,
+  TopperResult, User,
 } from '../models';
 import logger from '../utils/logger';
 
@@ -22,6 +24,7 @@ function resourceFromPath(path: string): string {
     'scholarship-forms': 'scholarship-form', 'contact-messages': 'contact-message',
     admins: 'admin-account', 'scholarship-programs': 'scholarship-program',
     upload: 'media', history: 'media-revision',
+    'notification-center': parts.includes('recipients') ? 'notification-recipient' : parts.includes('subscriptions') ? 'push-subscription' : parts.includes('read-all') || parts.includes('read') ? 'admin-notification' : parts.includes('settings') ? 'notification-setting' : 'admin-notification',
   };
   return names[value] || value;
 }
@@ -50,6 +53,9 @@ function modelForResource(resource: string): SnapshotModel | null {
     'contact-message': ContactMessage as unknown as SnapshotModel,
     'scholarship-program': ScholarshipProgram as unknown as SnapshotModel,
     'content-block': ContentBlock as unknown as SnapshotModel,
+    'admin-notification': AdminNotification as unknown as SnapshotModel,
+    'push-subscription': AdminPushSubscription as unknown as SnapshotModel,
+    'notification-recipient': AdminNotificationPreference as unknown as SnapshotModel,
   };
   return models[resource] || null;
 }
@@ -57,6 +63,9 @@ function modelForResource(resource: string): SnapshotModel | null {
 function sanitize(value: unknown, depth = 0): unknown {
   if (depth > 4 || value === null || value === undefined) return value;
   if (value instanceof Date) return value.toISOString();
+  if (typeof value === 'object' && value !== null && 'dataValues' in value) {
+    return sanitize((value as { dataValues: unknown }).dataValues, depth + 1);
+  }
   if (Array.isArray(value)) return value.slice(0, 100).map((item) => sanitize(item, depth + 1));
   if (typeof value !== 'object') return value;
   const result: Record<string, unknown> = {};
@@ -70,11 +79,20 @@ function sanitize(value: unknown, depth = 0): unknown {
 function responseData(value: unknown): unknown {
   if (!value || typeof value !== 'object') return value;
   const body = value as { data?: unknown };
-  return body.data === undefined ? value : body.data;
+  const data = body.data === undefined ? value : body.data;
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return data;
+  const record = data as Record<string, unknown>;
+  for (const key of ['user', 'admin', 'form', 'message', 'item', 'course', 'program']) {
+    if (record[key] && typeof record[key] === 'object') return record[key];
+  }
+  return data;
 }
 
 async function readBefore(resource: string, resourceId: string | null, req: Request): Promise<unknown> {
   if (resource === 'site-setting') return SiteSetting.findAll({ raw: true });
+  if (resource === 'notification-setting') return SiteSetting.findOne({ where: { key: 'admin_notifications_enabled' }, raw: true });
+  if (resource === 'notification-recipient' && resourceId) return AdminNotificationPreference.findOne({ where: { adminId: Number(resourceId) }, raw: true });
+  if (resource === 'push-subscription') return AdminPushSubscription.findOne({ where: { adminId: req.user?.id }, raw: true });
   if (resource === 'content-block') return ContentBlock.findOne({ where: { pageKey: req.params.pageKey || req.path.split('/').at(-2), contentKey: req.params.contentKey || req.path.split('/').at(-1) }, raw: true });
   const model = modelForResource(resource);
   return model && resourceId ? model.findByPk(resourceId) : null;
@@ -128,7 +146,7 @@ export async function activityLogger(req: Request, res: Response, next: NextFunc
         summary: `${action} ${resource}${afterId ? ` #${afterId}` : ''}`,
         metadata: { queryKeys: Object.keys(req.query) },
         before: sanitize(before) as Record<string, unknown> | null,
-        after: sanitize(after) as Record<string, unknown> | null,
+        after: sanitize(after ?? req.body) as Record<string, unknown> | null,
       });
     })().catch((error: unknown) => logger.error('Admin activity log write failed.', { error }));
   });

@@ -558,6 +558,13 @@ export default function AdminLeadTable({
             <div className="admin-mobile-record-list" aria-label={`${title} mobile list`}>
               {displayedRows.map((row) => {
                 const summaryColumns = columns.filter((column) => column.key !== "message").slice(0, 3);
+                const mobileValue = (column: LeadColumn): string => {
+                  if (column.key === "createdAt") return formatAdminDate(row[column.key]);
+                  if (column.key === "name" || column.key === "studentName") {
+                    return String(row.studentName || row.name || [row.firstName, row.lastName].filter(Boolean).join(" ") || "—");
+                  }
+                  return String(row[column.key] ?? "—");
+                };
                 return (
                   <article
                     key={row.id}
@@ -572,7 +579,7 @@ export default function AdminLeadTable({
                       {summaryColumns.map((column) => (
                         <div key={column.key}>
                           <span>{column.label}</span>
-                          <b>{column.render ? column.render(row) : column.key === "createdAt" ? formatAdminDate(row[column.key]) : String(row[column.key] ?? "—")}</b>
+                          <b className={column.key.toLowerCase().includes("email") || column.key === "name" ? "admin-mobile-record-value is-case-sensitive" : "admin-mobile-record-value"}>{mobileValue(column)}</b>
                         </div>
                       ))}
                     </div>
