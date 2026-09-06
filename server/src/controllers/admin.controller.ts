@@ -1092,7 +1092,11 @@ function getAdminActivityLogOptions(req: Request) {
 export const getAdminActivityLogs = asyncHandler(async (req: Request, res: Response) => {
   const options = getAdminActivityLogOptions(req);
   const result = await AdminActivityLog.findAndCountAll({ where: options.where, order: options.order, limit: options.limit, offset: (options.page - 1) * options.limit });
-  res.status(200).json({ status: 'success', data: result.rows, pagination: { page: options.page, limit: options.limit, total: result.count, totalPages: Math.ceil(result.count / options.limit), hasMore: options.page * options.limit < result.count, nextCursor: null } });
+  const adminIds = [...new Set(result.rows.map((row) => row.adminId))];
+  const admins = await Admin.findAll({ where: { id: adminIds }, attributes: ['id', 'name'] });
+  const names = new Map(admins.map((admin) => [admin.id, admin.name]));
+  const data = result.rows.map((row) => ({ ...row.toJSON(), adminName: names.get(row.adminId) || null }));
+  res.status(200).json({ status: 'success', data, pagination: { page: options.page, limit: options.limit, total: result.count, totalPages: Math.ceil(result.count / options.limit), hasMore: options.page * options.limit < result.count, nextCursor: null } });
 });
 
 export const exportAdminActivityLogs = asyncHandler(async (req: Request, res: Response) => {

@@ -40,6 +40,7 @@ export type AdminDetailDrawerProps = {
   email?: string;
   phone?: string;
   fields?: AdminDrawerField[];
+  changeReview?: React.ReactNode;
   message?: {
     title?: string;
     content: string;
@@ -74,6 +75,7 @@ export default function AdminDetailDrawer({
   email,
   phone,
   fields = [],
+  changeReview,
   message,
   imagePreview,
   externalLink,
@@ -418,6 +420,8 @@ export default function AdminDetailDrawer({
               </div>
             </div>
           )}
+
+          {changeReview}
 
           {/* Inquiry Message Card */}
           {message?.content && (
