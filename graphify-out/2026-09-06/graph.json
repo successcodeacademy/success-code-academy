@@ -12848,26 +12848,26 @@
       "norm_label": "contentblock.ts"
     },
     {
-      "label": "@types/jsonwebtoken",
+      "label": "express-rate-limit",
       "file_type": "code",
       "source_file": "server/package.json",
-      "source_location": "L31",
+      "source_location": "L38",
       "_origin": "ast",
-      "id": "server_package_dependencies_types_jsonwebtoken",
+      "id": "server_package_dependencies_express_rate_limit",
       "community": 193,
-      "community_name": "@types/jsonwebtoken",
-      "norm_label": "@types/jsonwebtoken"
+      "community_name": "express-rate-limit",
+      "norm_label": "express-rate-limit"
     },
     {
-      "label": "@types/jsonwebtoken",
+      "label": "express-rate-limit",
       "file_type": "concept",
       "source_file": "server/package.json",
-      "source_location": "L31",
+      "source_location": "L38",
       "_origin": "ast",
-      "id": "types_jsonwebtoken",
+      "id": "express_rate_limit",
       "community": 193,
-      "community_name": "@types/jsonwebtoken",
-      "norm_label": "@types/jsonwebtoken"
+      "community_name": "express-rate-limit",
+      "norm_label": "express-rate-limit"
     },
     {
       "label": "@types/bcrypt",
@@ -13376,17 +13376,6 @@
       "norm_label": "dotenv"
     },
     {
-      "label": "express-rate-limit",
-      "file_type": "code",
-      "source_file": "server/package.json",
-      "source_location": "L38",
-      "_origin": "ast",
-      "id": "server_package_dependencies_express_rate_limit",
-      "community": 23,
-      "community_name": "dependencies",
-      "norm_label": "express-rate-limit"
-    },
-    {
       "label": "multer",
       "file_type": "code",
       "source_file": "server/package.json",
@@ -13442,6 +13431,17 @@
       "norm_label": "@types/express"
     },
     {
+      "label": "@types/jsonwebtoken",
+      "file_type": "code",
+      "source_file": "server/package.json",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "server_package_dependencies_types_jsonwebtoken",
+      "community": 23,
+      "community_name": "dependencies",
+      "norm_label": "@types/jsonwebtoken"
+    },
+    {
       "label": "typescript",
       "file_type": "code",
       "source_file": "server/package.json",
@@ -13473,17 +13473,6 @@
       "community": 23,
       "community_name": "dependencies",
       "norm_label": "dotenv"
-    },
-    {
-      "label": "express-rate-limit",
-      "file_type": "concept",
-      "source_file": "server/package.json",
-      "source_location": "L38",
-      "_origin": "ast",
-      "id": "express_rate_limit",
-      "community": 23,
-      "community_name": "dependencies",
-      "norm_label": "express-rate-limit"
     },
     {
       "label": "multer",
@@ -13550,6 +13539,17 @@
       "community": 23,
       "community_name": "dependencies",
       "norm_label": "@types/express"
+    },
+    {
+      "label": "@types/jsonwebtoken",
+      "file_type": "concept",
+      "source_file": "server/package.json",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "types_jsonwebtoken",
+      "community": 23,
+      "community_name": "dependencies",
+      "norm_label": "@types/jsonwebtoken"
     },
     {
       "label": "restoreMediaRevision",
@@ -28240,6 +28240,18 @@
       "_origin": "ast",
       "source": "client_src_components_admin_notificationpermissionbutton",
       "target": "client_src_lib_admin_api_adminapifetch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "client/src/components/admin/NotificationPermissionButton.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "client_src_components_admin_notificationpermissionbutton",
+      "target": "client_src_lib_admin_api_adminnotificationpaths",
       "confidence_score": 1.0
     },
     {
