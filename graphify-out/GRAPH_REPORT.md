@@ -1,7 +1,7 @@
 # Graph Report - Success-Code-Academy  (2026-09-06)
 
 ## Corpus Check
-- 279 files · ~3,764,651 words
+- 279 files · ~3,764,696 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cddeb6c1`
+- Built from commit: `84fa1f82`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -37,11 +37,11 @@
 - compilerOptions
 - admin/page.tsx
 - ResultsClient.tsx
-- environment.ts
+- Banner.ts
 - dependencies
 - MediaRevision.ts
 - content.routes.ts
-- notificationPublisher.ts
+- environment.ts
 - admin/[...path]/route.ts
 - Success Code Academy NEET Coaching Website - Project Master Context
 - seedDatabase.ts
@@ -71,6 +71,7 @@
 - SectionHeading.tsx
 - middleware.ts
 - graphify.js
+- @types/jsonwebtoken
 - 5. Frontend — `client/`
 - environment.d.ts
 - express.d.ts
@@ -149,11 +150,10 @@
 - jsonwebtoken
 - assertNotLastSuperAdmin
 - logout/route.ts
-- mailer.ts
+- form.controller.ts
 - getSupabase
 - api.ts
 - pg
-- pg-hstore
 - resend
 - v1/index.ts
 - 17. Environment Variables Reference
@@ -164,7 +164,7 @@
 - helmet
 - exportLeadCsv
 - auth.routes.ts
-- SiteSetting
+- mailer.ts
 - ContentBlock.ts
 - express-rate-limit
 - @types/bcrypt
@@ -290,13 +290,13 @@ Nodes (20): ActivityPagination, ActivityResponse, ActivityType, AdminDashboardPa
 Cohesion: 0.16
 Nodes (7): metadata, ResultsClient(), videoStories, Button(), ButtonProps, resultsData, StudentResult
 
-### Community 22 - "environment.ts"
-Cohesion: 0.14
-Nodes (13): app, configuredOrigins, corsOptions, defaultAllowedOrigins, dbConfig, Env, envSchema, parsed (+5 more)
+### Community 22 - "Banner.ts"
+Cohesion: 0.50
+Nodes (4): Banner, BannerAttributes, BannerCreationAttributes, initBanner()
 
 ### Community 23 - "dependencies"
 Cohesion: 0.11
-Nodes (19): bcrypt, dotenv, multer, sequelize, dependencies, bcrypt, dotenv, multer (+11 more)
+Nodes (19): bcrypt, dotenv, multer, pg-hstore, sequelize, dependencies, bcrypt, dotenv (+11 more)
 
 ### Community 24 - "MediaRevision.ts"
 Cohesion: 0.19
@@ -304,11 +304,11 @@ Nodes (10): restoreMediaRevision, initMediaRevision(), MediaResourceType, MediaR
 
 ### Community 25 - "content.routes.ts"
 Cohesion: 0.10
-Nodes (19): AcademyVideo, AcademyVideoAttributes, AcademyVideoCreationAttributes, initAcademyVideo(), Banner, BannerAttributes, BannerCreationAttributes, initBanner() (+11 more)
+Nodes (19): AcademyVideo, AcademyVideoAttributes, AcademyVideoCreationAttributes, initAcademyVideo(), initNewsArticle(), NewsArticle, NewsArticleAttributes, NewsArticleCreationAttributes (+11 more)
 
-### Community 26 - "notificationPublisher.ts"
-Cohesion: 0.23
-Nodes (10): Admin, AdminNotificationPreference, AdminNotificationPreferenceAttributes, AdminNotificationPreferenceCreationAttributes, initAdminNotificationPreference(), configure(), createAdminNotification(), deliverAdminNotification() (+2 more)
+### Community 26 - "environment.ts"
+Cohesion: 0.14
+Nodes (16): configuredOrigins, corsOptions, defaultAllowedOrigins, dbConfig, Env, envSchema, parsed, AdminNotificationPreference (+8 more)
 
 ### Community 28 - "admin/[...path]/route.ts"
 Cohesion: 0.24
@@ -319,12 +319,12 @@ Cohesion: 0.09
 Nodes (22): 10. SEO, Performance & Technical Requirements, 11. Design & Branding Guidelines, 16. Testing & Quality Checklist, 18. AI Agent Implementation Instructions, 19. Definition of Done, 1. Project Overview, 20. Final Product Direction, 3. Repository Structure (+14 more)
 
 ### Community 30 - "seedDatabase.ts"
-Cohesion: 0.22
-Nodes (13): main(), reconcileSchema(), scheduleDatabaseReconnect(), startServer(), sequelize, testConnection(), claimMobileNumber(), seedDatabase() (+5 more)
+Cohesion: 0.15
+Nodes (18): main(), app, reconcileSchema(), scheduleDatabaseReconnect(), startServer(), errorHandler(), isZodError(), notFound() (+10 more)
 
 ### Community 31 - "models/index.ts"
 Cohesion: 0.06
-Nodes (45): AdminPasswordReset, AdminPasswordResetAttributes, AdminPasswordResetCreationAttributes, initAdminPasswordReset(), AdminPushSubscription, AdminPushSubscriptionAttributes, AdminPushSubscriptionCreationAttributes, initAdminPushSubscription() (+37 more)
+Nodes (41): AdminPasswordReset, AdminPasswordResetAttributes, AdminPasswordResetCreationAttributes, initAdminPasswordReset(), AdminPushSubscription, AdminPushSubscriptionAttributes, AdminPushSubscriptionCreationAttributes, initAdminPushSubscription() (+33 more)
 
 ### Community 32 - "getListOptions"
 Cohesion: 0.30
@@ -435,8 +435,8 @@ Cohesion: 0.40
 Nodes (5): 5.5 Student Hub, NCERT Solutions, NEET Answer Key, Study Material, Success Code Academy G-Books
 
 ### Community 88 - "notification.controller.ts"
-Cohesion: 0.22
-Nodes (16): adminId(), list, ok(), read, readAll, recipients, settings, status (+8 more)
+Cohesion: 0.19
+Nodes (17): adminId(), list, ok(), read, readAll, recipients, settings, status (+9 more)
 
 ### Community 89 - "client/README.md"
 Cohesion: 0.50
@@ -538,9 +538,9 @@ Nodes (8): assertAdminIdentityIsFree(), assertNotLastSuperAdmin(), countSuperAdm
 Cohesion: 0.12
 Nodes (41): canonicalProductionTarget(), consoleLogoutDestination(), DELETE(), dynamic, fallbackDestination(), GET(), isConsoleHost(), isProductionConsoleLogin() (+33 more)
 
-### Community 170 - "mailer.ts"
-Cohesion: 0.12
-Nodes (31): updateSettings, sendEmailOtp, findExistingCourseRegistration(), getMyCourseRegistration, normaliseEmail(), normalisePhone(), submitContactForm, submitCourseRegistration (+23 more)
+### Community 170 - "form.controller.ts"
+Cohesion: 0.21
+Nodes (17): sendEmailOtp, findExistingCourseRegistration(), getMyCourseRegistration, normaliseEmail(), normalisePhone(), submitContactForm, submitCourseRegistration, updateMyCourseRegistration (+9 more)
 
 ### Community 172 - "getSupabase"
 Cohesion: 0.50
@@ -570,9 +570,9 @@ Nodes (18): getMyRegistration, updateMyRegistration, authenticate, adminLoginLim
 Cohesion: 0.12
 Nodes (16): changeAdminPassword, resetAdminPassword, resetUserPassword, verifyAdminPasswordReset, verifyUserPasswordReset, adminForgotPasswordSchema, adminLoginSchema, adminPasswordSchema (+8 more)
 
-### Community 190 - "SiteSetting"
-Cohesion: 0.50
-Nodes (4): initSiteSetting(), SiteSetting, SiteSettingAttributes, SiteSettingCreationAttributes
+### Community 190 - "mailer.ts"
+Cohesion: 0.14
+Nodes (19): updateSettings, initSiteSetting(), SiteSetting, SiteSettingAttributes, SiteSettingCreationAttributes, brand, deliver(), deliverOnce() (+11 more)
 
 ### Community 192 - "ContentBlock.ts"
 Cohesion: 0.40

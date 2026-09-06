@@ -732,6 +732,19 @@
       "norm_label": "parsedvideoinfo"
     },
     {
+      "label": "AppError",
+      "file_type": "code",
+      "source_file": "server/src/utils/AppError.ts",
+      "source_location": "L12",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_utils_apperror_apperror",
+      "community": 170,
+      "community_name": "form.controller.ts",
+      "norm_label": "apperror"
+    },
+    {
       "label": "AsyncRouteHandler",
       "file_type": "code",
       "source_file": "server/src/utils/asyncHandler.ts",
@@ -741,34 +754,8 @@
       "_origin": "ast",
       "id": "server_src_utils_asynchandler_asyncroutehandler",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "asyncroutehandler"
-    },
-    {
-      "label": "MailMessage",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L25",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_mailmessage",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "mailmessage"
-    },
-    {
-      "label": "MailResult",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L69",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_mailresult",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "mailresult"
     },
     {
       "label": "PageBannerSlot",
@@ -936,7 +923,7 @@
       "_origin": "ast",
       "id": "server_src_models_sitesetting_sitesetting",
       "community": 190,
-      "community_name": "SiteSetting",
+      "community_name": "mailer.ts",
       "norm_label": "sitesetting"
     },
     {
@@ -949,7 +936,7 @@
       "_origin": "ast",
       "id": "server_src_models_sitesetting_sitesettingattributes",
       "community": 190,
-      "community_name": "SiteSetting",
+      "community_name": "mailer.ts",
       "norm_label": "sitesettingattributes"
     },
     {
@@ -962,8 +949,34 @@
       "_origin": "ast",
       "id": "server_src_models_sitesetting_sitesettingcreationattributes",
       "community": 190,
-      "community_name": "SiteSetting",
+      "community_name": "mailer.ts",
       "norm_label": "sitesettingcreationattributes"
+    },
+    {
+      "label": "MailMessage",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L25",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_mailmessage",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "mailmessage"
+    },
+    {
+      "label": "MailResult",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L69",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_mailresult",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "mailresult"
     },
     {
       "label": "ContentBlock",
@@ -1304,30 +1317,43 @@
       "norm_label": "studentresult"
     },
     {
-      "label": "Env",
+      "label": "Banner",
       "file_type": "code",
-      "source_file": "server/src/config/environment.ts",
-      "source_location": "L102",
+      "source_file": "server/src/models/Banner.ts",
+      "source_location": "L18",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "server_src_config_environment_env",
+      "id": "server_src_models_banner_banner",
       "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "env"
+      "community_name": "Banner.ts",
+      "norm_label": "banner"
     },
     {
-      "label": "AppError",
+      "label": "BannerAttributes",
       "file_type": "code",
-      "source_file": "server/src/utils/AppError.ts",
-      "source_location": "L12",
+      "source_file": "server/src/models/Banner.ts",
+      "source_location": "L3",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "server_src_utils_apperror_apperror",
+      "id": "server_src_models_banner_bannerattributes",
       "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "apperror"
+      "community_name": "Banner.ts",
+      "norm_label": "bannerattributes"
+    },
+    {
+      "label": "BannerCreationAttributes",
+      "file_type": "code",
+      "source_file": "server/src/models/Banner.ts",
+      "source_location": "L15",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_models_banner_bannercreationattributes",
+      "community": 22,
+      "community_name": "Banner.ts",
+      "norm_label": "bannercreationattributes"
     },
     {
       "label": "MediaResourceType",
@@ -1434,45 +1460,6 @@
       "norm_label": "academyvideocreationattributes"
     },
     {
-      "label": "Banner",
-      "file_type": "code",
-      "source_file": "server/src/models/Banner.ts",
-      "source_location": "L18",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_models_banner_banner",
-      "community": 25,
-      "community_name": "content.routes.ts",
-      "norm_label": "banner"
-    },
-    {
-      "label": "BannerAttributes",
-      "file_type": "code",
-      "source_file": "server/src/models/Banner.ts",
-      "source_location": "L3",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_models_banner_bannerattributes",
-      "community": 25,
-      "community_name": "content.routes.ts",
-      "norm_label": "bannerattributes"
-    },
-    {
-      "label": "BannerCreationAttributes",
-      "file_type": "code",
-      "source_file": "server/src/models/Banner.ts",
-      "source_location": "L15",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_models_banner_bannercreationattributes",
-      "community": 25,
-      "community_name": "content.routes.ts",
-      "norm_label": "bannercreationattributes"
-    },
-    {
       "label": "NewsArticle",
       "file_type": "code",
       "source_file": "server/src/models/NewsArticle.ts",
@@ -1510,6 +1497,45 @@
       "community": 25,
       "community_name": "content.routes.ts",
       "norm_label": "newsarticlecreationattributes"
+    },
+    {
+      "label": "Notification",
+      "file_type": "code",
+      "source_file": "server/src/models/Notification.ts",
+      "source_location": "L17",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_models_notification_notification",
+      "community": 25,
+      "community_name": "content.routes.ts",
+      "norm_label": "notification"
+    },
+    {
+      "label": "NotificationAttributes",
+      "file_type": "code",
+      "source_file": "server/src/models/Notification.ts",
+      "source_location": "L3",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_models_notification_notificationattributes",
+      "community": 25,
+      "community_name": "content.routes.ts",
+      "norm_label": "notificationattributes"
+    },
+    {
+      "label": "NotificationCreationAttributes",
+      "file_type": "code",
+      "source_file": "server/src/models/Notification.ts",
+      "source_location": "L14",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_models_notification_notificationcreationattributes",
+      "community": 25,
+      "community_name": "content.routes.ts",
+      "norm_label": "notificationcreationattributes"
     },
     {
       "label": "StarStudent",
@@ -1551,17 +1577,17 @@
       "norm_label": "starstudentcreationattributes"
     },
     {
-      "label": "Admin",
+      "label": "Env",
       "file_type": "code",
-      "source_file": "server/src/models/Admin.ts",
-      "source_location": "L22",
+      "source_file": "server/src/config/environment.ts",
+      "source_location": "L102",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "id": "server_src_models_admin_admin",
+      "id": "server_src_config_environment_env",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
-      "norm_label": "admin"
+      "community_name": "environment.ts",
+      "norm_label": "env"
     },
     {
       "label": "AdminNotificationPreference",
@@ -1573,7 +1599,7 @@
       "_origin": "ast",
       "id": "server_src_models_adminnotificationpreference_adminnotificationpreference",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "adminnotificationpreference"
     },
     {
@@ -1586,7 +1612,7 @@
       "_origin": "ast",
       "id": "server_src_models_adminnotificationpreference_adminnotificationpreferenceattributes",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "adminnotificationpreferenceattributes"
     },
     {
@@ -1599,7 +1625,7 @@
       "_origin": "ast",
       "id": "server_src_models_adminnotificationpreference_adminnotificationpreferencecreationattributes",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "adminnotificationpreferencecreationattributes"
     },
     {
@@ -1612,7 +1638,7 @@
       "_origin": "ast",
       "id": "server_src_utils_notificationpublisher_adminnotificationinput",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "adminnotificationinput"
     },
     {
@@ -1874,45 +1900,6 @@
       "community": 31,
       "community_name": "models/index.ts",
       "norm_label": "newslettersubscribercreationattributes"
-    },
-    {
-      "label": "Notification",
-      "file_type": "code",
-      "source_file": "server/src/models/Notification.ts",
-      "source_location": "L17",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_models_notification_notification",
-      "community": 31,
-      "community_name": "models/index.ts",
-      "norm_label": "notification"
-    },
-    {
-      "label": "NotificationAttributes",
-      "file_type": "code",
-      "source_file": "server/src/models/Notification.ts",
-      "source_location": "L3",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_models_notification_notificationattributes",
-      "community": 31,
-      "community_name": "models/index.ts",
-      "norm_label": "notificationattributes"
-    },
-    {
-      "label": "NotificationCreationAttributes",
-      "file_type": "code",
-      "source_file": "server/src/models/Notification.ts",
-      "source_location": "L14",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "id": "server_src_models_notification_notificationcreationattributes",
-      "community": 31,
-      "community_name": "models/index.ts",
-      "norm_label": "notificationcreationattributes"
     },
     {
       "label": "OtpVerification",
@@ -2511,6 +2498,19 @@
       "community": 69,
       "community_name": "express.d.ts",
       "norm_label": "request"
+    },
+    {
+      "label": "Admin",
+      "file_type": "code",
+      "source_file": "server/src/models/Admin.ts",
+      "source_location": "L22",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "server_src_models_admin_admin",
+      "community": 88,
+      "community_name": "notification.controller.ts",
+      "norm_label": "admin"
     },
     {
       "label": "AdminNotification",
@@ -4012,7 +4012,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_form_controller_findexistingcourseregistration",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "findexistingcourseregistration()"
     },
     {
@@ -4024,7 +4024,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_form_controller_normaliseemail",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "normaliseemail()"
     },
     {
@@ -4036,8 +4036,20 @@
       "_origin": "ast",
       "id": "server_src_controllers_form_controller_normalisephone",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "normalisephone()"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "server/src/utils/AppError.ts",
+      "source_location": "L17",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_apperror_apperror_constructor",
+      "community": 170,
+      "community_name": "form.controller.ts",
+      "norm_label": ".constructor()"
     },
     {
       "label": "asyncHandler()",
@@ -4048,56 +4060,8 @@
       "_origin": "ast",
       "id": "server_src_utils_asynchandler_asynchandler",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "asynchandler()"
-    },
-    {
-      "label": "deliver()",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L192",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_deliver",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "deliver()"
-    },
-    {
-      "label": "deliverOnce()",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L145",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_deliveronce",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "deliveronce()"
-    },
-    {
-      "label": "getClient()",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L82",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_getclient",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "getclient()"
-    },
-    {
-      "label": "getNotificationRecipients()",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L54",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_getnotificationrecipients",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "getnotificationrecipients()"
     },
     {
       "label": "isMailerConfigured()",
@@ -4108,56 +4072,8 @@
       "_origin": "ast",
       "id": "server_src_utils_mailer_ismailerconfigured",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "ismailerconfigured()"
-    },
-    {
-      "label": "isRetryable()",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L106",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_isretryable",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "isretryable()"
-    },
-    {
-      "label": "logoAttachment()",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L120",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_logoattachment",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "logoattachment()"
-    },
-    {
-      "label": "mailFrom()",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L100",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_mailfrom",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "mailfrom()"
-    },
-    {
-      "label": "normalizeNotificationRecipients()",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L40",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_normalizenotificationrecipients",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "normalizenotificationrecipients()"
     },
     {
       "label": "sendMail()",
@@ -4168,7 +4084,7 @@
       "_origin": "ast",
       "id": "server_src_utils_mailer_sendmail",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "sendmail()"
     },
     {
@@ -4180,32 +4096,8 @@
       "_origin": "ast",
       "id": "server_src_utils_mailer_sendmailtorecipients",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "sendmailtorecipients()"
-    },
-    {
-      "label": "sendNotificationRecipientWelcome()",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L253",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_sendnotificationrecipientwelcome",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "sendnotificationrecipientwelcome()"
-    },
-    {
-      "label": "sleep()",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L104",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_sleep",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "sleep()"
     },
     {
       "label": "publishAdminNotification()",
@@ -4216,7 +4108,7 @@
       "_origin": "ast",
       "id": "server_src_utils_notificationpublisher_publishadminnotification",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "publishadminnotification()"
     },
     {
@@ -4768,8 +4660,128 @@
       "_origin": "ast",
       "id": "server_src_models_sitesetting_initsitesetting",
       "community": 190,
-      "community_name": "SiteSetting",
+      "community_name": "mailer.ts",
       "norm_label": "initsitesetting()"
+    },
+    {
+      "label": "deliver()",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L192",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_deliver",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "deliver()"
+    },
+    {
+      "label": "deliverOnce()",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L145",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_deliveronce",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "deliveronce()"
+    },
+    {
+      "label": "getClient()",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L82",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_getclient",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "getclient()"
+    },
+    {
+      "label": "getNotificationRecipients()",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L54",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_getnotificationrecipients",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "getnotificationrecipients()"
+    },
+    {
+      "label": "isRetryable()",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L106",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_isretryable",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "isretryable()"
+    },
+    {
+      "label": "logoAttachment()",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L120",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_logoattachment",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "logoattachment()"
+    },
+    {
+      "label": "mailFrom()",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L100",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_mailfrom",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "mailfrom()"
+    },
+    {
+      "label": "normalizeNotificationRecipients()",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L40",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_normalizenotificationrecipients",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "normalizenotificationrecipients()"
+    },
+    {
+      "label": "sendNotificationRecipientWelcome()",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L253",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_sendnotificationrecipientwelcome",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "sendnotificationrecipientwelcome()"
+    },
+    {
+      "label": "sleep()",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L104",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_sleep",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "sleep()"
     },
     {
       "label": "initContentBlock()",
@@ -5120,64 +5132,16 @@
       "norm_label": "button()"
     },
     {
-      "label": "errorHandler()",
+      "label": "initBanner()",
       "file_type": "code",
-      "source_file": "server/src/middlewares/errorHandler.ts",
-      "source_location": "L32",
+      "source_file": "server/src/models/Banner.ts",
+      "source_location": "L34",
       "_callable": true,
       "_origin": "ast",
-      "id": "server_src_middlewares_errorhandler_errorhandler",
+      "id": "server_src_models_banner_initbanner",
       "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "errorhandler()"
-    },
-    {
-      "label": "isZodError()",
-      "file_type": "code",
-      "source_file": "server/src/middlewares/errorHandler.ts",
-      "source_location": "L11",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_middlewares_errorhandler_iszoderror",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "iszoderror()"
-    },
-    {
-      "label": "notFound()",
-      "file_type": "code",
-      "source_file": "server/src/middlewares/notFound.ts",
-      "source_location": "L8",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_middlewares_notfound_notfound",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "notfound()"
-    },
-    {
-      "label": "requestLogger()",
-      "file_type": "code",
-      "source_file": "server/src/middlewares/requestLogger.ts",
-      "source_location": "L11",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_middlewares_requestlogger_requestlogger",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "requestlogger()"
-    },
-    {
-      "label": ".constructor()",
-      "file_type": "code",
-      "source_file": "server/src/utils/AppError.ts",
-      "source_location": "L17",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_utils_apperror_apperror_constructor",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": ".constructor()"
+      "community_name": "Banner.ts",
+      "norm_label": "initbanner()"
     },
     {
       "label": "initMediaRevision()",
@@ -5216,18 +5180,6 @@
       "norm_label": "initacademyvideo()"
     },
     {
-      "label": "initBanner()",
-      "file_type": "code",
-      "source_file": "server/src/models/Banner.ts",
-      "source_location": "L34",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_models_banner_initbanner",
-      "community": 25,
-      "community_name": "content.routes.ts",
-      "norm_label": "initbanner()"
-    },
-    {
       "label": "initNewsArticle()",
       "file_type": "code",
       "source_file": "server/src/models/NewsArticle.ts",
@@ -5238,6 +5190,18 @@
       "community": 25,
       "community_name": "content.routes.ts",
       "norm_label": "initnewsarticle()"
+    },
+    {
+      "label": "initNotification()",
+      "file_type": "code",
+      "source_file": "server/src/models/Notification.ts",
+      "source_location": "L32",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_models_notification_initnotification",
+      "community": 25,
+      "community_name": "content.routes.ts",
+      "norm_label": "initnotification()"
     },
     {
       "label": "initStarStudent()",
@@ -5276,18 +5240,6 @@
       "norm_label": "readfromdatabase()"
     },
     {
-      "label": ".isSuperAdmin()",
-      "file_type": "code",
-      "source_file": "server/src/models/Admin.ts",
-      "source_location": "L37",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_models_admin_admin_issuperadmin",
-      "community": 26,
-      "community_name": "notificationPublisher.ts",
-      "norm_label": ".issuperadmin()"
-    },
-    {
       "label": "initAdminNotificationPreference()",
       "file_type": "code",
       "source_file": "server/src/models/AdminNotificationPreference.ts",
@@ -5296,7 +5248,7 @@
       "_origin": "ast",
       "id": "server_src_models_adminnotificationpreference_initadminnotificationpreference",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "initadminnotificationpreference()"
     },
     {
@@ -5308,7 +5260,7 @@
       "_origin": "ast",
       "id": "server_src_utils_notificationdelivery_configure",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "configure()"
     },
     {
@@ -5320,7 +5272,7 @@
       "_origin": "ast",
       "id": "server_src_utils_notificationdelivery_createadminnotification",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "createadminnotification()"
     },
     {
@@ -5332,7 +5284,7 @@
       "_origin": "ast",
       "id": "server_src_utils_notificationdelivery_deliveradminnotification",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "deliveradminnotification()"
     },
     {
@@ -5344,7 +5296,7 @@
       "_origin": "ast",
       "id": "server_src_utils_notificationdelivery_isenabled",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "isenabled()"
     },
     {
@@ -5504,6 +5456,54 @@
       "norm_label": "startserver()"
     },
     {
+      "label": "errorHandler()",
+      "file_type": "code",
+      "source_file": "server/src/middlewares/errorHandler.ts",
+      "source_location": "L32",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_middlewares_errorhandler_errorhandler",
+      "community": 30,
+      "community_name": "seedDatabase.ts",
+      "norm_label": "errorhandler()"
+    },
+    {
+      "label": "isZodError()",
+      "file_type": "code",
+      "source_file": "server/src/middlewares/errorHandler.ts",
+      "source_location": "L11",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_middlewares_errorhandler_iszoderror",
+      "community": 30,
+      "community_name": "seedDatabase.ts",
+      "norm_label": "iszoderror()"
+    },
+    {
+      "label": "notFound()",
+      "file_type": "code",
+      "source_file": "server/src/middlewares/notFound.ts",
+      "source_location": "L8",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_middlewares_notfound_notfound",
+      "community": 30,
+      "community_name": "seedDatabase.ts",
+      "norm_label": "notfound()"
+    },
+    {
+      "label": "requestLogger()",
+      "file_type": "code",
+      "source_file": "server/src/middlewares/requestLogger.ts",
+      "source_location": "L11",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_middlewares_requestlogger_requestlogger",
+      "community": 30,
+      "community_name": "seedDatabase.ts",
+      "norm_label": "requestlogger()"
+    },
+    {
       "label": "testConnection()",
       "file_type": "code",
       "source_file": "server/src/models/index.ts",
@@ -5646,18 +5646,6 @@
       "community": 31,
       "community_name": "models/index.ts",
       "norm_label": "initnewslettersubscriber()"
-    },
-    {
-      "label": "initNotification()",
-      "file_type": "code",
-      "source_file": "server/src/models/Notification.ts",
-      "source_location": "L32",
-      "_callable": true,
-      "_origin": "ast",
-      "id": "server_src_models_notification_initnotification",
-      "community": 31,
-      "community_name": "models/index.ts",
-      "norm_label": "initnotification()"
     },
     {
       "label": "initOtpVerification()",
@@ -7194,6 +7182,18 @@
       "community": 88,
       "community_name": "notification.controller.ts",
       "norm_label": "ok()"
+    },
+    {
+      "label": ".isSuperAdmin()",
+      "file_type": "code",
+      "source_file": "server/src/models/Admin.ts",
+      "source_location": "L37",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "server_src_models_admin_admin_issuperadmin",
+      "community": 88,
+      "community_name": "notification.controller.ts",
+      "norm_label": ".issuperadmin()"
     },
     {
       "label": "initAdminNotification()",
@@ -11201,17 +11201,6 @@
       "norm_label": "video-utils.ts"
     },
     {
-      "label": "updateSettings",
-      "file_type": "code",
-      "source_file": "server/src/controllers/admin.controller.ts",
-      "source_location": "L726",
-      "_origin": "ast",
-      "id": "server_src_controllers_admin_controller_updatesettings",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "updatesettings"
-    },
-    {
       "label": "sendEmailOtp",
       "file_type": "code",
       "source_file": "server/src/controllers/auth.controller.ts",
@@ -11219,7 +11208,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_auth_controller_sendemailotp",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "sendemailotp"
     },
     {
@@ -11230,7 +11219,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_form_controller",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "form.controller.ts"
     },
     {
@@ -11241,7 +11230,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_form_controller_getmycourseregistration",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "getmycourseregistration"
     },
     {
@@ -11252,7 +11241,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_form_controller_submitcontactform",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "submitcontactform"
     },
     {
@@ -11263,7 +11252,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_form_controller_submitcourseregistration",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "submitcourseregistration"
     },
     {
@@ -11274,7 +11263,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_form_controller_updatemycourseregistration",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "updatemycourseregistration"
     },
     {
@@ -11285,7 +11274,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_newsletter_controller",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "newsletter.controller.ts"
     },
     {
@@ -11296,7 +11285,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_newsletter_controller_subscribenewsletter",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "subscribenewsletter"
     },
     {
@@ -11307,7 +11296,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_scholarship_controller",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "scholarship.controller.ts"
     },
     {
@@ -11318,7 +11307,7 @@
       "_origin": "ast",
       "id": "server_src_controllers_scholarship_controller_createregistration",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "createregistration"
     },
     {
@@ -11329,8 +11318,19 @@
       "_origin": "ast",
       "id": "server_src_middlewares_authenticate",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "authenticate.ts"
+    },
+    {
+      "label": "AppError.ts",
+      "file_type": "code",
+      "source_file": "server/src/utils/AppError.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_utils_apperror",
+      "community": 170,
+      "community_name": "form.controller.ts",
+      "norm_label": "apperror.ts"
     },
     {
       "label": "asyncHandler.ts",
@@ -11340,41 +11340,8 @@
       "_origin": "ast",
       "id": "server_src_utils_asynchandler",
       "community": 170,
-      "community_name": "mailer.ts",
+      "community_name": "form.controller.ts",
       "norm_label": "asynchandler.ts"
-    },
-    {
-      "label": "mailer.ts",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_utils_mailer",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "mailer.ts"
-    },
-    {
-      "label": "brand",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L267",
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_brand",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "brand"
-    },
-    {
-      "label": "websiteUrl",
-      "file_type": "code",
-      "source_file": "server/src/utils/mailer.ts",
-      "source_location": "L264",
-      "_origin": "ast",
-      "id": "server_src_utils_mailer_websiteurl",
-      "community": 170,
-      "community_name": "mailer.ts",
-      "norm_label": "websiteurl"
     },
     {
       "label": "getSignedUploadUrl",
@@ -11507,28 +11474,6 @@
       "community": 175,
       "community_name": "pg",
       "norm_label": "pg"
-    },
-    {
-      "label": "pg-hstore",
-      "file_type": "code",
-      "source_file": "server/package.json",
-      "source_location": "L43",
-      "_origin": "ast",
-      "id": "server_package_dependencies_pg_hstore",
-      "community": 176,
-      "community_name": "pg-hstore",
-      "norm_label": "pg-hstore"
-    },
-    {
-      "label": "pg-hstore",
-      "file_type": "concept",
-      "source_file": "server/package.json",
-      "source_location": "L43",
-      "_origin": "ast",
-      "id": "pg_hstore",
-      "community": 176,
-      "community_name": "pg-hstore",
-      "norm_label": "pg-hstore"
     },
     {
       "label": "resend",
@@ -12807,6 +12752,17 @@
       "norm_label": "**/*.tsx"
     },
     {
+      "label": "updateSettings",
+      "file_type": "code",
+      "source_file": "server/src/controllers/admin.controller.ts",
+      "source_location": "L726",
+      "_origin": "ast",
+      "id": "server_src_controllers_admin_controller_updatesettings",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "updatesettings"
+    },
+    {
       "label": "SiteSetting.ts",
       "file_type": "code",
       "source_file": "server/src/models/SiteSetting.ts",
@@ -12814,8 +12770,41 @@
       "_origin": "ast",
       "id": "server_src_models_sitesetting",
       "community": 190,
-      "community_name": "SiteSetting",
+      "community_name": "mailer.ts",
       "norm_label": "sitesetting.ts"
+    },
+    {
+      "label": "mailer.ts",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_utils_mailer",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "mailer.ts"
+    },
+    {
+      "label": "brand",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L267",
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_brand",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "brand"
+    },
+    {
+      "label": "websiteUrl",
+      "file_type": "code",
+      "source_file": "server/src/utils/mailer.ts",
+      "source_location": "L264",
+      "_origin": "ast",
+      "id": "server_src_utils_mailer_websiteurl",
+      "community": 190,
+      "community_name": "mailer.ts",
+      "norm_label": "websiteurl"
     },
     {
       "label": "ContentBlock.ts",
@@ -13137,169 +13126,15 @@
       "norm_label": "resultsdata"
     },
     {
-      "label": "app.ts",
+      "label": "Banner.ts",
       "file_type": "code",
-      "source_file": "server/src/app.ts",
+      "source_file": "server/src/models/Banner.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "server_src_app",
+      "id": "server_src_models_banner",
       "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "app.ts"
-    },
-    {
-      "label": "app",
-      "file_type": "code",
-      "source_file": "server/src/app.ts",
-      "source_location": "L19",
-      "_origin": "ast",
-      "id": "server_src_app_app",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "app"
-    },
-    {
-      "label": "cors.ts",
-      "file_type": "code",
-      "source_file": "server/src/config/cors.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_config_cors",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "cors.ts"
-    },
-    {
-      "label": "configuredOrigins",
-      "file_type": "code",
-      "source_file": "server/src/config/cors.ts",
-      "source_location": "L4",
-      "_origin": "ast",
-      "id": "server_src_config_cors_configuredorigins",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "configuredorigins"
-    },
-    {
-      "label": "corsOptions",
-      "file_type": "code",
-      "source_file": "server/src/config/cors.ts",
-      "source_location": "L26",
-      "_origin": "ast",
-      "id": "server_src_config_cors_corsoptions",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "corsoptions"
-    },
-    {
-      "label": "defaultAllowedOrigins",
-      "file_type": "code",
-      "source_file": "server/src/config/cors.ts",
-      "source_location": "L9",
-      "_origin": "ast",
-      "id": "server_src_config_cors_defaultallowedorigins",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "defaultallowedorigins"
-    },
-    {
-      "label": "database.ts",
-      "file_type": "code",
-      "source_file": "server/src/config/database.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_config_database",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "database.ts"
-    },
-    {
-      "label": "dbConfig",
-      "file_type": "code",
-      "source_file": "server/src/config/database.ts",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "server_src_config_database_dbconfig",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "dbconfig"
-    },
-    {
-      "label": "environment.ts",
-      "file_type": "code",
-      "source_file": "server/src/config/environment.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_config_environment",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "environment.ts"
-    },
-    {
-      "label": "envSchema",
-      "file_type": "code",
-      "source_file": "server/src/config/environment.ts",
-      "source_location": "L13",
-      "_origin": "ast",
-      "id": "server_src_config_environment_envschema",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "envschema"
-    },
-    {
-      "label": "parsed",
-      "file_type": "code",
-      "source_file": "server/src/config/environment.ts",
-      "source_location": "L70",
-      "_origin": "ast",
-      "id": "server_src_config_environment_parsed",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "parsed"
-    },
-    {
-      "label": "errorHandler.ts",
-      "file_type": "code",
-      "source_file": "server/src/middlewares/errorHandler.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_middlewares_errorhandler",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "errorhandler.ts"
-    },
-    {
-      "label": "notFound.ts",
-      "file_type": "code",
-      "source_file": "server/src/middlewares/notFound.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_middlewares_notfound",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "notfound.ts"
-    },
-    {
-      "label": "requestLogger.ts",
-      "file_type": "code",
-      "source_file": "server/src/middlewares/requestLogger.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_middlewares_requestlogger",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "requestlogger.ts"
-    },
-    {
-      "label": "AppError.ts",
-      "file_type": "code",
-      "source_file": "server/src/utils/AppError.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_utils_apperror",
-      "community": 22,
-      "community_name": "environment.ts",
-      "norm_label": "apperror.ts"
+      "community_name": "Banner.ts",
+      "norm_label": "banner.ts"
     },
     {
       "label": "dependencies",
@@ -13346,6 +13181,17 @@
       "norm_label": "multer"
     },
     {
+      "label": "pg-hstore",
+      "file_type": "code",
+      "source_file": "server/package.json",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "server_package_dependencies_pg_hstore",
+      "community": 23,
+      "community_name": "dependencies",
+      "norm_label": "pg-hstore"
+    },
+    {
       "label": "sequelize",
       "file_type": "code",
       "source_file": "server/package.json",
@@ -13390,17 +13236,6 @@
       "norm_label": "@types/express"
     },
     {
-      "label": "@types/jsonwebtoken",
-      "file_type": "code",
-      "source_file": "server/package.json",
-      "source_location": "L31",
-      "_origin": "ast",
-      "id": "server_package_dependencies_types_jsonwebtoken",
-      "community": 23,
-      "community_name": "dependencies",
-      "norm_label": "@types/jsonwebtoken"
-    },
-    {
       "label": "typescript",
       "file_type": "code",
       "source_file": "server/package.json",
@@ -13443,6 +13278,17 @@
       "community": 23,
       "community_name": "dependencies",
       "norm_label": "multer"
+    },
+    {
+      "label": "pg-hstore",
+      "file_type": "concept",
+      "source_file": "server/package.json",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "pg_hstore",
+      "community": 23,
+      "community_name": "dependencies",
+      "norm_label": "pg-hstore"
     },
     {
       "label": "sequelize",
@@ -13498,17 +13344,6 @@
       "community": 23,
       "community_name": "dependencies",
       "norm_label": "@types/express"
-    },
-    {
-      "label": "@types/jsonwebtoken",
-      "file_type": "concept",
-      "source_file": "server/package.json",
-      "source_location": "L31",
-      "_origin": "ast",
-      "id": "types_jsonwebtoken",
-      "community": 23,
-      "community_name": "dependencies",
-      "norm_label": "@types/jsonwebtoken"
     },
     {
       "label": "restoreMediaRevision",
@@ -13588,17 +13423,6 @@
       "norm_label": "academyvideo.ts"
     },
     {
-      "label": "Banner.ts",
-      "file_type": "code",
-      "source_file": "server/src/models/Banner.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_models_banner",
-      "community": 25,
-      "community_name": "content.routes.ts",
-      "norm_label": "banner.ts"
-    },
-    {
       "label": "NewsArticle.ts",
       "file_type": "code",
       "source_file": "server/src/models/NewsArticle.ts",
@@ -13608,6 +13432,17 @@
       "community": 25,
       "community_name": "content.routes.ts",
       "norm_label": "newsarticle.ts"
+    },
+    {
+      "label": "Notification.ts",
+      "file_type": "code",
+      "source_file": "server/src/models/Notification.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_models_notification",
+      "community": 25,
+      "community_name": "content.routes.ts",
+      "norm_label": "notification.ts"
     },
     {
       "label": "StarStudent.ts",
@@ -13654,6 +13489,105 @@
       "norm_label": "transient_database_errors"
     },
     {
+      "label": "cors.ts",
+      "file_type": "code",
+      "source_file": "server/src/config/cors.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_config_cors",
+      "community": 26,
+      "community_name": "environment.ts",
+      "norm_label": "cors.ts"
+    },
+    {
+      "label": "configuredOrigins",
+      "file_type": "code",
+      "source_file": "server/src/config/cors.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "server_src_config_cors_configuredorigins",
+      "community": 26,
+      "community_name": "environment.ts",
+      "norm_label": "configuredorigins"
+    },
+    {
+      "label": "corsOptions",
+      "file_type": "code",
+      "source_file": "server/src/config/cors.ts",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "server_src_config_cors_corsoptions",
+      "community": 26,
+      "community_name": "environment.ts",
+      "norm_label": "corsoptions"
+    },
+    {
+      "label": "defaultAllowedOrigins",
+      "file_type": "code",
+      "source_file": "server/src/config/cors.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "server_src_config_cors_defaultallowedorigins",
+      "community": 26,
+      "community_name": "environment.ts",
+      "norm_label": "defaultallowedorigins"
+    },
+    {
+      "label": "database.ts",
+      "file_type": "code",
+      "source_file": "server/src/config/database.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_config_database",
+      "community": 26,
+      "community_name": "environment.ts",
+      "norm_label": "database.ts"
+    },
+    {
+      "label": "dbConfig",
+      "file_type": "code",
+      "source_file": "server/src/config/database.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "server_src_config_database_dbconfig",
+      "community": 26,
+      "community_name": "environment.ts",
+      "norm_label": "dbconfig"
+    },
+    {
+      "label": "environment.ts",
+      "file_type": "code",
+      "source_file": "server/src/config/environment.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_config_environment",
+      "community": 26,
+      "community_name": "environment.ts",
+      "norm_label": "environment.ts"
+    },
+    {
+      "label": "envSchema",
+      "file_type": "code",
+      "source_file": "server/src/config/environment.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "server_src_config_environment_envschema",
+      "community": 26,
+      "community_name": "environment.ts",
+      "norm_label": "envschema"
+    },
+    {
+      "label": "parsed",
+      "file_type": "code",
+      "source_file": "server/src/config/environment.ts",
+      "source_location": "L70",
+      "_origin": "ast",
+      "id": "server_src_config_environment_parsed",
+      "community": 26,
+      "community_name": "environment.ts",
+      "norm_label": "parsed"
+    },
+    {
       "label": "AdminNotificationPreference.ts",
       "file_type": "code",
       "source_file": "server/src/models/AdminNotificationPreference.ts",
@@ -13661,7 +13595,7 @@
       "_origin": "ast",
       "id": "server_src_models_adminnotificationpreference",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "adminnotificationpreference.ts"
     },
     {
@@ -13672,7 +13606,7 @@
       "_origin": "ast",
       "id": "server_src_utils_notificationdelivery",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "notificationdelivery.ts"
     },
     {
@@ -13683,7 +13617,7 @@
       "_origin": "ast",
       "id": "server_src_utils_notificationpublisher",
       "community": 26,
-      "community_name": "notificationPublisher.ts",
+      "community_name": "environment.ts",
       "norm_label": "notificationpublisher.ts"
     },
     {
@@ -14523,6 +14457,28 @@
       "norm_label": "update_videos.ts"
     },
     {
+      "label": "app.ts",
+      "file_type": "code",
+      "source_file": "server/src/app.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_app",
+      "community": 30,
+      "community_name": "seedDatabase.ts",
+      "norm_label": "app.ts"
+    },
+    {
+      "label": "app",
+      "file_type": "code",
+      "source_file": "server/src/app.ts",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "server_src_app_app",
+      "community": 30,
+      "community_name": "seedDatabase.ts",
+      "norm_label": "app"
+    },
+    {
       "label": "src/index.ts",
       "file_type": "code",
       "source_file": "server/src/index.ts",
@@ -14532,6 +14488,39 @@
       "community": 30,
       "community_name": "seedDatabase.ts",
       "norm_label": "src/index.ts"
+    },
+    {
+      "label": "errorHandler.ts",
+      "file_type": "code",
+      "source_file": "server/src/middlewares/errorHandler.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_middlewares_errorhandler",
+      "community": 30,
+      "community_name": "seedDatabase.ts",
+      "norm_label": "errorhandler.ts"
+    },
+    {
+      "label": "notFound.ts",
+      "file_type": "code",
+      "source_file": "server/src/middlewares/notFound.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_middlewares_notfound",
+      "community": 30,
+      "community_name": "seedDatabase.ts",
+      "norm_label": "notfound.ts"
+    },
+    {
+      "label": "requestLogger.ts",
+      "file_type": "code",
+      "source_file": "server/src/middlewares/requestLogger.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "server_src_middlewares_requestlogger",
+      "community": 30,
+      "community_name": "seedDatabase.ts",
+      "norm_label": "requestlogger.ts"
     },
     {
       "label": "sequelize",
@@ -14686,17 +14675,6 @@
       "community": 31,
       "community_name": "models/index.ts",
       "norm_label": "newslettersubscriber.ts"
-    },
-    {
-      "label": "Notification.ts",
-      "file_type": "code",
-      "source_file": "server/src/models/Notification.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "server_src_models_notification",
-      "community": 31,
-      "community_name": "models/index.ts",
-      "norm_label": "notification.ts"
     },
     {
       "label": "OtpVerification.ts",
@@ -16561,7 +16539,7 @@
       "label": "config",
       "file_type": "code",
       "source_file": "client/src/middleware.ts",
-      "source_location": "L74",
+      "source_location": "L82",
       "_origin": "ast",
       "id": "client_src_middleware_config",
       "community": 61,
@@ -16589,6 +16567,28 @@
       "community": 62,
       "community_name": "graphify.js",
       "norm_label": "important: keep the reminder string free of backticks and $(...) constructs."
+    },
+    {
+      "label": "@types/jsonwebtoken",
+      "file_type": "code",
+      "source_file": "server/package.json",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "server_package_dependencies_types_jsonwebtoken",
+      "community": 63,
+      "community_name": "@types/jsonwebtoken",
+      "norm_label": "@types/jsonwebtoken"
+    },
+    {
+      "label": "@types/jsonwebtoken",
+      "file_type": "concept",
+      "source_file": "server/package.json",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "types_jsonwebtoken",
+      "community": 63,
+      "community_name": "@types/jsonwebtoken",
+      "norm_label": "@types/jsonwebtoken"
     },
     {
       "label": "5. Frontend \u2014 `client/`",
@@ -44616,7 +44616,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "client/src/middleware.ts",
-      "source_location": "L74",
+      "source_location": "L82",
       "weight": 1.0,
       "_origin": "ast",
       "source": "client_src_middleware",
@@ -52818,5 +52818,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "cddeb6c1b9a67ade94d9b802ae75d3b3b13b44f4"
+  "built_at_commit": "84fa1f82944d7581a960305fbe3225c58f1147a3"
 }
