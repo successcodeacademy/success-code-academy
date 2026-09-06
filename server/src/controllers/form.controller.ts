@@ -3,7 +3,7 @@ import { Op, col, fn, where as sequelizeWhere } from 'sequelize';
 import { ContactMessage, CourseRegistration } from '../models';
 import { asyncHandler } from '../utils/asyncHandler';
 import logger from '../utils/logger';
-import { sendMail, brand } from '../utils/mailer';
+import { sendMail, sendMailToRecipients } from '../utils/mailer';
 import {
   contactFormReceipt,
   contactFormStaffAlert,
@@ -110,15 +110,14 @@ export const submitContactForm = asyncHandler(
 
     // Staff alert to the academy inbox, best-effort, reply-to the sender.
     const alert = contactFormStaffAlert({ name, email, phone, message });
-    void sendMail({
-      to: brand.email,
+    void sendMailToRecipients({
       subject: `New contact enquiry from ${name}`,
       text: alert.text,
       html: alert.html,
       replyTo: email,
-    }).then((mail) => {
-      if (!mail.delivered) {
-        logger.warn('[Contact Form] Staff alert email failed', { error: mail.error });
+    }).then((mailResults) => {
+      if (mailResults.some((mail) => !mail.delivered)) {
+        logger.warn('[Contact Form] Staff alert email failed', { error: mailResults.find((mail) => !mail.delivered)?.error });
       }
     });
 

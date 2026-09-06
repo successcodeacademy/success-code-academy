@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import logger from './logger';
 import { env, appBaseUrl } from '../config/environment';
+import { SiteSetting } from '../models';
 
 /**
  * Resend-backed outbound email.
@@ -30,6 +31,34 @@ export type MailMessage = {
   /** Upper "Reply-To" override, e.g. the submitter on a contact receipt. */
   replyTo?: string | undefined;
 };
+
+const NOTIFICATION_RECIPIENTS_KEY = 'notification_recipients';
+const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * Read the current staff notification destinations. A missing setting means
+ * this install has never configured destinations, so retain the bootstrap
+ * administrator as a backwards-compatible safety net. An existing setting is
+ * authoritative, including an empty/invalid value (which intentionally sends
+ * nothing rather than silently reverting to the bootstrap address).
+ */
+export async function getNotificationRecipients(): Promise<string[]> {
+  try {
+    const setting = await SiteSetting.findOne({ where: { key: NOTIFICATION_RECIPIENTS_KEY } });
+    const raw = setting === null ? env.SUPER_ADMIN_EMAIL : setting.value;
+    return raw
+      .split(/[\s,;]+/)
+      .map((email) => email.trim().toLowerCase())
+      .filter((email, index, values) => EMAIL_SHAPE.test(email) && values.indexOf(email) === index);
+  } catch (error) {
+    // Notification delivery is best-effort. If settings cannot be read, keep
+    // existing installs safe by using the bootstrap address.
+    logger.warn('[Mail] Could not read notification recipients; using bootstrap admin email.', { error });
+    return EMAIL_SHAPE.test(env.SUPER_ADMIN_EMAIL.trim().toLowerCase())
+      ? [env.SUPER_ADMIN_EMAIL.trim().toLowerCase()]
+      : [];
+  }
+}
 
 export type MailResult = {
   /** True only when Resend accepted the message. */
@@ -206,13 +235,20 @@ export async function sendMail(message: MailMessage): Promise<MailResult> {
   }
 }
 
+/** Send an internal notification to each configured destination independently. */
+export async function sendMailToRecipients(
+  message: Omit<MailMessage, 'to'>,
+): Promise<MailResult[]> {
+  const recipients = await getNotificationRecipients();
+  return Promise.all(recipients.map((to) => sendMail({ ...message, to })));
+}
+
 /** Public website origin for links rendered inside email bodies. */
 export const websiteUrl = appBaseUrl() || 'https://www.successcodeacademy.in';
 
 /** Where academy announcements originate, used in the footer copy. */
 export const brand = {
   name: 'Success Code Academy',
-  email: env.SUPER_ADMIN_EMAIL,
   website: websiteUrl,
   phone: '+91 86004 70850',
 };

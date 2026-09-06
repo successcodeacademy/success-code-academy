@@ -1,11 +1,11 @@
 # Graph Report - Success-Code-Academy  (2026-09-06)
 
 ## Corpus Check
-- 279 files · ~3,764,235 words
+- 279 files · ~3,764,203 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1604 nodes · 2954 edges · 200 communities (138 shown, 62 thin omitted)
+- 1604 nodes · 2953 edges · 200 communities (138 shown, 62 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 9 edges (avg confidence: 0.63)
 - Token cost: 0 input · 0 output
 
@@ -173,7 +173,7 @@
 - SiteSetting
 - User
 - ContentBlock.ts
-- express-rate-limit
+- @types/jsonwebtoken
 - @types/bcrypt
 - @types/web-push
 - web-push
@@ -303,7 +303,7 @@ Nodes (19): app, configuredOrigins, corsOptions, defaultAllowedOrigins, appBaseU
 
 ### Community 23 - "dependencies"
 Cohesion: 0.11
-Nodes (19): bcrypt, dotenv, multer, sequelize, dependencies, bcrypt, dotenv, multer (+11 more)
+Nodes (19): bcrypt, dotenv, express-rate-limit, multer, sequelize, dependencies, bcrypt, dotenv (+11 more)
 
 ### Community 24 - "MediaRevision.ts"
 Cohesion: 0.19

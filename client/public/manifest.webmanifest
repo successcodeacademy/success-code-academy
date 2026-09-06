@@ -1,7 +1,9 @@
 {
   "name": "Success Code Academy Admin",
   "short_name": "SCA Admin",
+  "id": "/admin",
   "start_url": "/admin",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#f2f5f9",
   "theme_color": "#102f5e",

@@ -77,15 +77,15 @@ function adminPath(path: string): string {
 }
 
 export const adminNotificationPaths = {
-  list: "notifications",
-  read: (id: number | string) => `notifications/${id}/read`,
-  readAll: "notifications/read-all",
-  subscriptions: "notifications/subscriptions",
-  status: "notifications/status",
-  vapidPublicKey: "notifications/vapid-public-key",
-  settings: "notifications/settings",
-  recipients: "notifications/recipients",
-  recipient: (id: number | string) => `notifications/recipients/${id}`,
+  list: "notification-center",
+  read: (id: number | string) => `notification-center/${id}/read`,
+  readAll: "notification-center/read-all",
+  subscriptions: "notification-center/subscriptions",
+  status: "notification-center/status",
+  vapidPublicKey: "notification-center/vapid-public-key",
+  settings: "notification-center/settings",
+  recipients: "notification-center/recipients",
+  recipient: (id: number | string) => `notification-center/recipients/${id}`,
 } as const;
 
 export async function adminApiFetch<T>(

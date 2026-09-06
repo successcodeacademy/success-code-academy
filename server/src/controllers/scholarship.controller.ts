@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { ScholarshipRegistration } from '../models';
 import { asyncHandler } from '../utils/asyncHandler';
 import logger from '../utils/logger';
-import { sendMail, brand } from '../utils/mailer';
+import { sendMail, sendMailToRecipients } from '../utils/mailer';
 import { scholarshipRegistrationReceipt, scholarshipRegistrationStaffAlert } from '../utils/emailTemplates';
 import { AppError } from '../utils/AppError';
 import { publishAdminNotification } from '../utils/notificationPublisher';
@@ -192,11 +192,14 @@ export const createRegistration = asyncHandler(
       preferredCourse,
       scholarshipProgram,
     });
-    void sendMail({
-      to: brand.email,
+    void sendMailToRecipients({
       subject: `New SCST registration — ${studentName} (${studentClass})`,
       text: adminTemplate.text,
       html: adminTemplate.html,
+    }).then((mailResults) => {
+      if (mailResults.some((mail) => !mail.delivered)) {
+        logger.warn('[Scholarship] Staff alert email failed', { error: mailResults.find((mail) => !mail.delivered)?.error });
+      }
     });
 
     res.status(201).json({

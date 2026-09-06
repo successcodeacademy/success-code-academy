@@ -20,9 +20,12 @@ v1Router.use('/health', healthRoutes);
 v1Router.use('/scholarships', scholarshipRoutes);
 v1Router.use('/auth', authRoutes);
 v1Router.use('/forms', formRoutes);
+// Public announcement management already owns /admin/notifications. Keep the
+// private browser-alert API on a separate namespace so paths such as
+// /subscriptions can never be mistaken for an announcement :id.
+v1Router.use('/admin/notification-center', notificationRoutes);
 v1Router.use('/admin', adminRoutes);
 v1Router.use('/content', contentRoutes);
 v1Router.use('/newsletter', newsletterRoutes);
-v1Router.use('/admin/notifications', notificationRoutes);
 
 export default v1Router;

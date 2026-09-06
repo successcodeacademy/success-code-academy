@@ -50,9 +50,9 @@ const envSchema = z.object({
   // has no super administrator yet. Set SUPER_ADMIN_PASSWORD in the deployment
   // environment to avoid relying on the built-in bootstrap password, which is
   // logged on startup and must be changed after the first sign-in.
-  SUPER_ADMIN_EMAIL: z.string().default('ubermanorshaikh@gmail.com'),
+  SUPER_ADMIN_EMAIL: z.string().default('admin.hr@successcodeacademy.in'),
   SUPER_ADMIN_PASSWORD: z.string().default('Password@123'),
-  SUPER_ADMIN_MOBILE_NUMBER: z.string().default('9000000001'),
+  SUPER_ADMIN_MOBILE_NUMBER: z.string().default('9347371746'),
   SUPER_ADMIN_NAME: z.string().default('Super Administrator'),
 
   // CORS
@@ -64,7 +64,7 @@ const envSchema = z.object({
     .default('debug'),
   VAPID_PUBLIC_KEY: z.string().default(''),
   VAPID_PRIVATE_KEY: z.string().default(''),
-  VAPID_SUBJECT: z.string().url().default('mailto:admin@example.com'),
+  VAPID_SUBJECT: z.string().url().default('mailto:admin.hr@successcodeacademy.in'),
 });
 
 const parsed = envSchema.safeParse(process.env);

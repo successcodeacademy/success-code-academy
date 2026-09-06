@@ -696,6 +696,7 @@ const SETTINGS_KEYS = [
   'youtube',
   'linkedin',
   'twitter',
+  'notification_recipients',
   'page_banner_scholarships',
   'page_banner_contact',
   'page_banner_results',
@@ -712,11 +713,23 @@ async function loadSettingsMap(): Promise<Record<string, string>> {
 
 export const getSettings = asyncHandler(async (_req: Request, res: Response) => {
   const map = await loadSettingsMap();
+  if (_req.user?.role !== SUPER_ADMIN) {
+    delete map.notification_recipients;
+  }
   res.status(200).json({ status: 'success', data: map });
 });
 
 export const updateSettings = asyncHandler(async (req: Request, res: Response) => {
   const body = req.body || {};
+  if (
+    Object.prototype.hasOwnProperty.call(body, 'notification_recipients') &&
+    req.user?.role !== SUPER_ADMIN
+  ) {
+    throw new AppError(
+      'Only a super administrator can manage internal email recipients.',
+      403,
+    );
+  }
   const rows: Array<{ key: string; value: string }> = [];
 
   for (const key of SETTINGS_KEYS) {

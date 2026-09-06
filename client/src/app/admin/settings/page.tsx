@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bell, CheckCircle2, Clock, KeyRound, Mail, RefreshCw, Save, Send, ShieldCheck, Users } from "lucide-react";
-import { adminApiFetch, AdminApiError, getAdminNotificationRecipients, getAdminNotificationStatus, updateAdminNotificationRecipient, updateAdminNotificationSettings, type AdminNotificationRecipient, type AdminNotificationStatus } from "@/lib/admin-api";
+import { Bell, CheckCircle2, Clock, KeyRound, Mail, Plus, RefreshCw, Save, Send, ShieldCheck, Trash2 } from "lucide-react";
+import { adminApiFetch, AdminApiError, getAdminNotificationStatus, updateAdminNotificationSettings, type AdminNotificationStatus } from "@/lib/admin-api";
 import { useAdminSession } from "@/components/admin/AdminSessionContext";
 import { useToast } from "@/components/admin/Toast";
 import {
@@ -11,7 +11,6 @@ import {
   AdminPageHeader,
 } from "@/components/admin/AdminUi";
 import NotificationPermissionButton from "@/components/admin/NotificationPermissionButton";
-import { adminRoleLabel } from "@/lib/roles";
 
 type SiteSettings = {
   phone: string;
@@ -32,6 +31,9 @@ const initialSettings: SiteSettings = {
   ...defaultSiteSettings,
 };
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PUBLIC_SETTING_KEYS = ["phone", "email", "address1", "address2", "whatsapp", "facebook", "instagram", "youtube", "linkedin", "twitter"] as const;
+
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState(initialSettings);
   const [loading, setLoading] = useState(true);
@@ -42,11 +44,10 @@ export default function AdminSettingsPage() {
   const toast = useToast();
 
   const [notificationStatus, setNotificationStatus] = useState<AdminNotificationStatus | null>(null);
-  const [recipients, setRecipients] = useState<AdminNotificationRecipient[]>([]);
+  const [recipients, setRecipients] = useState<string[]>([]);
   const [notificationLoading, setNotificationLoading] = useState(true);
-  const [recipientsLoading, setRecipientsLoading] = useState(false);
   const [notificationSaving, setNotificationSaving] = useState(false);
-  const [recipientSaving, setRecipientSaving] = useState<number | null>(null);
+  const [recipientsSaving, setRecipientsSaving] = useState(false);
 
   const [resetSending, setResetSending] = useState(false);
   const [resetSent, setResetSent] = useState(false);
@@ -54,17 +55,20 @@ export default function AdminSettingsPage() {
   const [cooldown, setCooldown] = useState(0);
 
   useEffect(() => {
-    adminApiFetch<Record<string, string>>("settings")
-      .then((response) =>
-        setSettings((current) => ({ ...current, ...response.data })),
-      )
+    adminApiFetch<Record<string, string | boolean>>("settings")
+      .then((response) => {
+        const { notification_recipients: storedRecipients, admin_notifications_enabled: _legacyToggle, ...rawSettings } = response.data;
+        const publicSettings = Object.fromEntries(Object.entries(rawSettings).filter(([key, value]) => PUBLIC_SETTING_KEYS.includes(key as typeof PUBLIC_SETTING_KEYS[number]) && typeof value === "string")) as Partial<SiteSettings>;
+        setSettings((current) => ({ ...current, ...publicSettings }));
+        if (isSuperAdmin && typeof storedRecipients === "string") setRecipients(storedRecipients.split(/[,;\n]+/).map((email) => email.trim()).filter(Boolean));
+      })
       .catch((caught: unknown) =>
         setError(
           caught instanceof Error ? caught.message : "Unable to load settings.",
         ),
       )
       .finally(() => setLoading(false));
-  }, []);
+  }, [isSuperAdmin]);
 
   useEffect(() => {
     let active = true;
@@ -79,17 +83,8 @@ export default function AdminSettingsPage() {
       })
       .finally(() => { if (active) setNotificationLoading(false); });
 
-    if (isSuperAdmin) {
-      setRecipientsLoading(true);
-      void getAdminNotificationRecipients()
-        .then((response) => {
-          if (active) setRecipients(Array.isArray(response.data) ? response.data.filter((recipient) => recipient.id !== user?.id) : []);
-        })
-        .catch(() => { if (active) toast.info("Administrator notification recipients could not be loaded."); })
-        .finally(() => { if (active) setRecipientsLoading(false); });
-    }
     return () => { active = false; };
-  }, [isSuperAdmin, toast, user?.id]);
+  }, [toast]);
 
   async function toggleGlobalNotifications() {
     if (!notificationStatus || notificationSaving) return;
@@ -104,16 +99,28 @@ export default function AdminSettingsPage() {
     } finally { setNotificationSaving(false); }
   }
 
-  async function toggleRecipient(id: number, enabled: boolean) {
-    if (recipientSaving !== null) return;
-    setRecipientSaving(id);
+  function addRecipient() {
+    setRecipients((current) => [...current, ""]);
+    toast.success("Recipient row added.");
+  }
+
+  function removeRecipient(index: number) {
+    setRecipients((current) => current.filter((_, currentIndex) => currentIndex !== index));
+    toast.success("Recipient removed. Save recipients to apply the change.");
+  }
+
+  async function saveRecipients() {
+    if (!isSuperAdmin || recipientsSaving) return;
+    const cleaned = recipients.map((email) => email.trim()).filter(Boolean);
+    const invalid = cleaned.find((email) => !EMAIL_PATTERN.test(email));
+    if (invalid) { toast.error(`“${invalid}” is not a valid email address.`); return; }
+    setRecipientsSaving(true);
     try {
-      await updateAdminNotificationRecipient(id, !enabled);
-      setRecipients((current) => current.map((recipient) => recipient.id === id ? { ...recipient, enabled: !enabled } : recipient));
-      toast[!enabled ? "success" : "info"](`${recipients.find((recipient) => recipient.id === id)?.name || "Administrator"} will ${!enabled ? "now" : "no longer"} receive alerts.`);
-    } catch (caught) {
-      toast.error(caught instanceof Error ? caught.message : "Unable to update notification recipient.");
-    } finally { setRecipientSaving(null); }
+      await adminApiFetch("settings", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ notification_recipients: cleaned.join(",") }) });
+      setRecipients(cleaned);
+      toast.success("Notification recipients saved.");
+    } catch (caught) { toast.error(caught instanceof Error ? caught.message : "Unable to save notification recipients."); }
+    finally { setRecipientsSaving(false); }
   }
 
   function updateSetting(key: keyof SiteSettings, value: string) {
@@ -126,10 +133,12 @@ export default function AdminSettingsPage() {
     setError("");
     setMessage("");
     try {
+      const settingsPayload = Object.fromEntries(PUBLIC_SETTING_KEYS.map((key) => [key, settings[key]]));
+
       await adminApiFetch("settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(settings),
+        body: JSON.stringify(settingsPayload),
       });
       setMessage("Website contact and social details were saved.");
       toast.success("Website contact and social details were saved.");
@@ -225,7 +234,7 @@ export default function AdminSettingsPage() {
           <header className="admin-card-header">
             <div>
               <h2>Admin notification routing</h2>
-              <p>Choose whether alerts are active globally and which administrators receive them.</p>
+              <p>Control browser alerts globally and manage the email inboxes that receive internal updates.</p>
             </div>
             <ShieldCheck size={20} aria-hidden="true" />
           </header>
@@ -240,15 +249,20 @@ export default function AdminSettingsPage() {
                 {notificationStatus?.enabled ? "Disable globally" : "Enable globally"}
               </button>
             </div>
-            <div className="admin-notification-recipients-head"><span><Users size={15} /> Alert recipients</span><small>{recipients.filter((recipient) => recipient.enabled).length} enabled</small></div>
-            {recipientsLoading ? <AdminLoadingState label="Loading administrators…" /> : recipients.length === 0 ? <p className="admin-notification-empty">No other administrators are available.</p> : <div className="admin-notification-recipients">
-              {recipients.map((recipient) => <div className="admin-notification-recipient" key={recipient.id}>
-                <div className="admin-notification-recipient-copy"><strong>{recipient.name}</strong><div className="admin-notification-recipient-details"><span className="admin-notification-recipient-email">{recipient.email}</span><span className="admin-notification-recipient-role">{adminRoleLabel(recipient.role)}</span></div></div>
-                <button type="button" className={`admin-notification-switch ${recipient.enabled ? "is-on" : ""}`} onClick={() => toggleRecipient(recipient.id, recipient.enabled)} disabled={recipientSaving !== null} aria-pressed={recipient.enabled} aria-label={`${recipient.enabled ? "Disable" : "Enable"} alerts for ${recipient.name}`}>
-                  <span />{recipientSaving === recipient.id ? "Saving…" : recipient.enabled ? "On" : "Off"}
-                </button>
-              </div>)}
-            </div>}
+            <div className="admin-notification-recipients-head">
+              <span>Internal email recipients</span>
+              <button type="button" className="admin-icon-button" onClick={addRecipient} aria-label="Add notification recipient"><Plus size={16} /></button>
+            </div>
+            <div className="admin-email-recipient-list">
+              {recipients.length === 0 && <p className="admin-notification-empty">No email recipients added yet.</p>}
+              {recipients.map((email, index) => (
+                <div className="admin-email-recipient-row" key={index}>
+                  <input type="email" value={email} placeholder="admin@example.com" aria-label={`Recipient email ${index + 1}`} onChange={(event) => setRecipients((current) => current.map((value, currentIndex) => currentIndex === index ? event.target.value : value))} />
+                  <button type="button" className="admin-icon-button admin-recipient-delete" onClick={() => removeRecipient(index)} aria-label={`Delete recipient ${index + 1}`}><Trash2 size={16} /></button>
+                </div>
+              ))}
+            </div>
+            <div className="admin-form-actions"><button type="button" className="admin-button" onClick={saveRecipients} disabled={recipientsSaving}><Save size={16} />{recipientsSaving ? "Saving…" : "Save recipients"}</button></div>
           </div>
         </section>
       )}

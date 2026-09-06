@@ -183,6 +183,10 @@ export const settingsUpdateSchema = z
     youtube: optionalLink,
     linkedin: optionalLink,
     twitter: optionalLink,
+    notification_recipients: z.string().trim().max(4000).refine(
+      (value) => value.length > 0 && value.split(/[\s,;]+/).every((email) => z.string().email().safeParse(email).success),
+      'Provide one or more valid email addresses separated by commas, spaces, semicolons, or new lines',
+    ).optional(),
     page_banner_scholarships: optionalLink,
     page_banner_contact: optionalLink,
     page_banner_results: optionalLink,
@@ -191,6 +195,41 @@ export const settingsUpdateSchema = z
   .refine((value) => Object.keys(value).length > 0, {
     message: 'Provide at least one setting to update',
   });
+
+// These are intentionally separate from settingsUpdateSchema. Notification
+// configuration is mounted under /admin/notifications, not /admin/settings.
+export const notificationSettingsSchema = z
+  .object({ enabled: z.boolean() })
+  .strict();
+
+export const notificationSubscriptionSchema = z
+  .object({
+    endpoint: z.string().url().max(2048),
+    expirationTime: z.number().finite().nullable().optional(),
+    keys: z
+      .object({
+        p256dh: z.string().min(16).max(500),
+        auth: z.string().min(8).max(500),
+      })
+      .strict(),
+  })
+  .strict();
+
+export const notificationUnsubscribeSchema = z
+  .object({ endpoint: z.string().url().max(2048) })
+  .strict();
+
+export const notificationIdParamsSchema = z
+  .object({ id: z.coerce.number().finite().int().positive() })
+  .strict();
+
+export const notificationAdminIdParamsSchema = z
+  .object({ adminId: z.coerce.number().finite().int().positive() })
+  .strict();
+
+// Notification controls are deliberately kept off the site-settings schema.
+// The global browser notification switch is updated through
+// `/admin/notifications/settings` with `{ enabled: boolean }` instead.
 
 export const adminListQuerySchema = z
   .object({

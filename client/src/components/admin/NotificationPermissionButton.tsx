@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Bell, CheckCircle2, LoaderCircle } from "lucide-react";
-import { adminApiFetch, getAdminNotificationStatus, type AdminNotificationStatus } from "@/lib/admin-api";
+import { adminApiFetch, adminNotificationPaths, getAdminNotificationStatus, type AdminNotificationStatus } from "@/lib/admin-api";
 import { useToast } from "@/components/admin/Toast";
 
 const SW_PATH = "/sw.js";
@@ -53,7 +53,9 @@ export default function NotificationPermissionButton({ compact = false }: Props)
       if (enabled) {
         const subscription = await registration.pushManager.getSubscription();
         if (subscription) {
-          await adminApiFetch("notifications/subscriptions", { method: "DELETE", body: JSON.stringify({ endpoint: subscription.endpoint }) });
+          const endpoint = subscription.endpoint;
+          if (!endpoint) throw new Error("This browser subscription is invalid. Refresh the page and try again.");
+          await adminApiFetch(adminNotificationPaths.subscriptions, { method: "DELETE", body: JSON.stringify({ endpoint }) });
           await subscription.unsubscribe();
         }
         setEnabled(false);
@@ -64,11 +66,16 @@ export default function NotificationPermissionButton({ compact = false }: Props)
       const permission = await Notification.requestPermission();
       if (permission !== "granted") throw new Error("Notification permission was not granted.");
       if (status && !status.vapidConfigured) throw new Error("Browser notifications are not configured yet.");
-      const vapidResponse = await adminApiFetch<{ publicKey: string }>("notifications/vapid-public-key");
+      const vapidResponse = await adminApiFetch<{ publicKey: string }>(adminNotificationPaths.vapidPublicKey);
       const vapidKey = vapidResponse.data.publicKey;
       if (!vapidKey) throw new Error("Browser notifications are not configured.");
       const subscription = await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: decodeKey(vapidKey) });
-      await adminApiFetch("notifications/subscriptions", { method: "POST", body: JSON.stringify(subscription.toJSON()) });
+      const serialized = subscription.toJSON();
+      if (!serialized.endpoint || !serialized.keys?.p256dh || !serialized.keys.auth) {
+        await subscription.unsubscribe();
+        throw new Error("The browser returned an incomplete notification subscription.");
+      }
+      await adminApiFetch(adminNotificationPaths.subscriptions, { method: "POST", body: JSON.stringify({ endpoint: serialized.endpoint, expirationTime: serialized.expirationTime ?? null, keys: { p256dh: serialized.keys.p256dh, auth: serialized.keys.auth } }) });
       setEnabled(true);
       toast.success("Browser notifications are now enabled.");
     } catch (error) {
