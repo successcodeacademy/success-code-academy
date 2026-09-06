@@ -5,6 +5,7 @@ import { authorize } from '../../middlewares/authorize';
 import { validate } from '../../middlewares/validate';
 import { ADMIN_ROLES, SUPER_ADMIN } from '../../config/roles';
 import { passwordResetLimiter } from '../../middlewares/rateLimiter';
+import { activityLogger } from '../../middlewares/activityLogger';
 import {
   adminListQuerySchema,
   activityListQuerySchema,
@@ -43,6 +44,7 @@ import {
   adminUpdateContactMessageSchema,
   courseCreateSchema,
   courseUpdateSchema,
+  adminActivityLogQuerySchema,
 } from '../../validation/admin.schemas';
 
 const router = Router();
@@ -64,6 +66,7 @@ const router = Router();
  */
 router.use(authenticate);
 router.use(authorize(...ADMIN_ROLES));
+router.use(activityLogger);
 
 const superAdminOnly = authorize(SUPER_ADMIN);
 
@@ -316,6 +319,16 @@ router.get(
   '/activity',
   validate(activityListQuerySchema, 'query'),
   adminController.getDashboardActivity,
+);
+router.get(
+  '/activity-logs',
+  validate(adminActivityLogQuerySchema, 'query'),
+  adminController.getAdminActivityLogs,
+);
+router.get(
+  '/activity-logs/export.csv',
+  validate(adminActivityLogQuerySchema.omit({ page: true, limit: true }), 'query'),
+  adminController.exportAdminActivityLogs,
 );
 router.get(
   '/database/export.csv',

@@ -31,6 +31,7 @@ import {
 import AdminNotification, { initAdminNotification } from './AdminNotification';
 import AdminPushSubscription, { initAdminPushSubscription } from './AdminPushSubscription';
 import AdminNotificationPreference, { initAdminNotificationPreference } from './AdminNotificationPreference';
+import AdminActivityLog, { initAdminActivityLog } from './AdminActivityLog';
 
 initAdmin(sequelize);
 initAdminPasswordReset(sequelize);
@@ -55,6 +56,7 @@ initNewsletterSubscriber(sequelize);
 initAdminNotification(sequelize);
 initAdminPushSubscription(sequelize);
 initAdminNotificationPreference(sequelize);
+initAdminActivityLog(sequelize);
 
 export async function testConnection(): Promise<boolean> {
   try {
@@ -103,5 +105,6 @@ export {
   AdminNotification,
   AdminPushSubscription,
   AdminNotificationPreference,
+  AdminActivityLog,
 };
 export default sequelize;

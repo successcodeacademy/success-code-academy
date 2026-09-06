@@ -80,6 +80,7 @@ const navigation = [
     items: [
       { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
       { label: "Web analytics", href: "/admin/analytics", icon: TrendingUp },
+      { label: "Activity logs", href: "/admin/activity-logs", icon: ClipboardList },
       { label: "Visual website editor", href: "/?edit=1", icon: Globe2 },
     ],
   },

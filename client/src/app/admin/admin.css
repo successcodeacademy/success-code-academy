@@ -2644,6 +2644,44 @@ div.admin-dash-empty {
   .admin-dash-pagination { width:100%; justify-content:flex-end; margin-left:0; }
 }
 
+.admin-activity-log-panel .admin-dash-table td[data-label="Summary"] {
+  overflow-wrap: anywhere;
+}
+
+.admin-activity-log-panel .admin-dash-table td[data-label="Administrator"] small {
+  display: block;
+  color: var(--admin-muted);
+  font-size: 0.72rem;
+  margin-top: 2px;
+}
+
+@media (max-width:640px) {
+  .admin-activity-log-panel .admin-dash-table td[data-label="Date"] {
+    font-size: 0.8rem;
+    color: var(--admin-muted);
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Summary"] {
+    display: block;
+    padding-top: 6px;
+  }
+
+  .admin-activity-log-panel .admin-dash-table td[data-label="Summary"]::before {
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .admin-activity-log-panel .admin-dash-footer {
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .admin-activity-log-panel .admin-dash-pagination {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
 /* --- Dark Theme Overrides --- */
 html[data-admin-theme="dark"] .admin-dash-header-icon {
   background: #0f223f;

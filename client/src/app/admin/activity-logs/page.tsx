@@ -1,0 +1,153 @@
+"use client";
+
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronsUpDown, ChevronUp, Download, Search, X } from "lucide-react";
+import { adminApiFetch } from "@/lib/admin-api";
+import AdminDetailDrawer from "@/components/admin/AdminDetailDrawer";
+import { AdminNotice, AdminPageHeader, AdminTableSkeleton } from "@/components/admin/AdminUi";
+import { useToast } from "@/components/admin/Toast";
+
+type LogRow = {
+  id: number;
+  adminId: number;
+  adminEmail: string;
+  adminRole: string;
+  action: string;
+  resource: string;
+  resourceId: string | null;
+  method: string;
+  route: string;
+  summary: string;
+  metadata: Record<string, unknown> | null;
+  before: Record<string, unknown> | null;
+  after: Record<string, unknown> | null;
+  createdAt: string;
+};
+
+type SortKey = "createdAt" | "adminEmail" | "adminRole" | "action" | "resource";
+
+function formatDate(value: string): string {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString("en-IN", {
+    day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit",
+  });
+}
+
+function titleCase(value: string): string {
+  return value.split("-").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
+}
+
+export default function AdminActivityLogsPage() {
+  const toast = useToast();
+  const [rows, setRows] = useState<LogRow[]>([]);
+  const [query, setQuery] = useState("");
+  const [role, setRole] = useState("");
+  const [action, setAction] = useState("");
+  const [resource, setResource] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(25);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [sortBy, setSortBy] = useState<SortKey>("createdAt");
+  const [sortDirection, setSortDirection] = useState<"ASC" | "DESC">("DESC");
+  const [selected, setSelected] = useState<LogRow | null>(null);
+  const [exporting, setExporting] = useState(false);
+
+  const params = useCallback((withPage = true) => {
+    const value = new URLSearchParams({ limit: String(pageSize), sortBy, sortDirection });
+    if (withPage) value.set("page", String(page));
+    if (query.trim()) value.set("q", query.trim());
+    if (role) value.set("role", role);
+    if (action) value.set("action", action);
+    if (resource) value.set("resource", resource);
+    if (dateFrom) value.set("dateFrom", dateFrom);
+    if (dateTo) value.set("dateTo", dateTo);
+    return value;
+  }, [action, dateFrom, dateTo, page, pageSize, query, resource, role, sortBy, sortDirection]);
+
+  const load = useCallback(async () => {
+    setLoading(true); setError("");
+    try {
+      const response = await adminApiFetch<LogRow[]>(`activity-logs?${params().toString()}`);
+      setRows(response.data || []);
+      const pagination = response.pagination as typeof response.pagination & { total?: number; totalPages?: number; page?: number };
+      setTotal(pagination?.total ?? 0);
+      setTotalPages(Math.max(1, pagination?.totalPages ?? 1));
+    } catch (caught) {
+      const message = caught instanceof Error ? caught.message : "Unable to load activity logs.";
+      setError(message); toast.error(message);
+    } finally { setLoading(false); }
+  }, [params, toast]);
+
+  useEffect(() => { void load(); }, [load]);
+
+  const clearFilters = () => {
+    setQuery(""); setRole(""); setAction(""); setResource(""); setDateFrom(""); setDateTo(""); setPage(1);
+  };
+
+  const changePageSize = (value: number) => {
+    setPageSize(value);
+    setPage(1);
+  };
+
+  const changeSort = (key: SortKey) => {
+    setPage(1);
+    if (sortBy === key) setSortDirection((current) => current === "ASC" ? "DESC" : "ASC");
+    else { setSortBy(key); setSortDirection(key === "createdAt" ? "DESC" : "ASC"); }
+  };
+
+  const exportLogs = async () => {
+    setExporting(true);
+    try {
+      const response = await fetch(`/api/admin/activity-logs/export.csv?${params(false).toString()}`, { credentials: "same-origin", cache: "no-store" });
+      if (!response.ok) throw new Error("Export could not be created.");
+      const url = URL.createObjectURL(await response.blob());
+      const anchor = document.createElement("a"); anchor.href = url; anchor.download = "admin-activity-logs.csv"; anchor.click(); URL.revokeObjectURL(url);
+      toast.success("Activity log CSV downloaded.");
+    } catch (caught) { toast.error(caught instanceof Error ? caught.message : "Export failed."); }
+    finally { setExporting(false); }
+  };
+
+  const sortIcon = (key: SortKey) => sortBy === key ? (sortDirection === "ASC" ? <ChevronUp size={12} /> : <ChevronDown size={12} />) : <ChevronsUpDown size={12} />;
+  const drawerFields = useMemo(() => selected ? [
+    { label: "Administrator", value: selected.adminEmail, fullWidth: true },
+    { label: "Role", value: titleCase(selected.adminRole) },
+    { label: "Action", value: titleCase(selected.action) },
+    { label: "Resource", value: titleCase(selected.resource) },
+    { label: "Record ID", value: selected.resourceId || "Not applicable" },
+    { label: "HTTP method", value: selected.method },
+    { label: "Route", value: selected.route, fullWidth: true },
+    { label: "Summary", value: selected.summary, fullWidth: true },
+    { label: "Before", value: selected.before ? JSON.stringify(selected.before, null, 2) : "Not available", fullWidth: true },
+    { label: "After", value: selected.after ? JSON.stringify(selected.after, null, 2) : "Not available", fullWidth: true },
+    { label: "Metadata", value: selected.metadata ? JSON.stringify(selected.metadata, null, 2) : "None", fullWidth: true },
+  ] : [], [selected]);
+
+  return (
+    <div className="admin-page">
+      <AdminPageHeader eyebrow="Access & security" title="Activity logs" description="Read-only history of successful mutations made through the admin dashboard." />
+      {error && <AdminNotice tone="error">{error}</AdminNotice>}
+      <section className="admin-dash-panel admin-activity-log-panel" aria-label="Admin activity logs">
+        <header className="admin-dash-table-toolbar">
+          <div className="admin-dash-search-box"><Search size={14} className="admin-dash-search-icon" /><input className="admin-dash-search-input" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} placeholder="Search administrator, action, resource..." aria-label="Search activity logs" />{query && <button type="button" className="admin-dash-search-clear" onClick={() => setQuery("")} aria-label="Clear search"><X size={11} /></button>}</div>
+          <div className="admin-dash-filter-grid">
+            <select className="admin-dash-filter-input" value={role} onChange={(event) => { setRole(event.target.value); setPage(1); }} aria-label="Filter by role"><option value="">All roles</option><option value="admin">Admin</option><option value="super-admin">Super admin</option></select>
+            <input className="admin-dash-filter-input" value={action} onChange={(event) => { setAction(event.target.value); setPage(1); }} placeholder="Action" aria-label="Filter by action" />
+            <input className="admin-dash-filter-input" value={resource} onChange={(event) => { setResource(event.target.value); setPage(1); }} placeholder="Resource" aria-label="Filter by resource" />
+            <input className="admin-dash-filter-input" value={dateFrom} onChange={(event) => { setDateFrom(event.target.value); setPage(1); }} type="date" aria-label="Date from" />
+            <input className="admin-dash-filter-input" value={dateTo} onChange={(event) => { setDateTo(event.target.value); setPage(1); }} type="date" aria-label="Date to" />
+            <button type="button" className="admin-button secondary" onClick={clearFilters}>Clear filters</button>
+            <button type="button" className="admin-button secondary" onClick={exportLogs} disabled={exporting}><Download size={14} /> {exporting ? "Exporting..." : "Export CSV"}</button>
+          </div>
+        </header>
+        {loading ? <AdminTableSkeleton rows={6} columns={6} /> : <div className="admin-dash-table-wrap"><table className="admin-dash-table"><thead><tr><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("createdAt")}>Date {sortIcon("createdAt")}</button></th><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("adminEmail")}>Administrator {sortIcon("adminEmail")}</button></th><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("action")}>Action {sortIcon("action")}</button></th><th><button type="button" className="admin-dash-sort" onClick={() => changeSort("resource")}>Resource {sortIcon("resource")}</button></th><th>Summary</th><th className="admin-dash-action-heading">Action</th></tr></thead><tbody>{rows.length === 0 ? <tr><td colSpan={6} className="admin-dash-empty">No activity logs found.</td></tr> : rows.map((row) => <tr key={row.id} className="admin-dash-row" onClick={() => setSelected(row)}><td data-label="Date">{formatDate(row.createdAt)}</td><td data-label="Administrator">{row.adminEmail}<small>{titleCase(row.adminRole)}</small></td><td data-label="Action"><span className="admin-dash-pill is-courses">{titleCase(row.action)}</span></td><td data-label="Resource">{titleCase(row.resource)}</td><td data-label="Summary">{row.summary}</td><td className="admin-dash-action-cell"><button type="button" className="admin-dash-link-btn" onClick={(event) => { event.stopPropagation(); setSelected(row); }}>View &rarr;</button></td></tr>)}</tbody></table></div>}
+        <footer className="admin-dash-footer"><span>Showing {rows.length ? (page - 1) * pageSize + 1 : 0}-{Math.min(page * pageSize, total)} of {total} activity logs</span><div className="admin-dash-pagination admin-pagination-controls"><label>Rows <select value={pageSize} onChange={(event) => changePageSize(Number(event.target.value))}><option value={10}>10</option><option value={25}>25</option><option value={50}>50</option></select></label><button type="button" className="admin-icon-button" disabled={page <= 1 || loading} onClick={() => setPage((value) => value - 1)} aria-label="Previous page"><ChevronLeft size={15} /></button>{Array.from({ length: totalPages }, (_, index) => index + 1).slice(Math.max(0, page - 3), page + 2).map((number) => <button type="button" key={number} className={`admin-dash-page-number ${page === number ? "is-active" : ""}`} onClick={() => setPage(number)}>{number}</button>)}<button type="button" className="admin-icon-button" disabled={page >= totalPages || loading} onClick={() => setPage((value) => value + 1)} aria-label="Next page"><ChevronRight size={15} /></button></div></footer>
+      </section>
+      {selected && <AdminDetailDrawer open onClose={() => setSelected(null)} recordId={selected.id} badge={{ label: "Activity log", variant: "messages" }} title={selected.summary} timestamp={formatDate(selected.createdAt)} fields={drawerFields} />}
+    </div>
+  );
+}

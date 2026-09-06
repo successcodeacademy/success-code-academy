@@ -25,6 +25,7 @@ import {
 } from '../../middlewares/rateLimiter';
 import { authorize } from '../../middlewares/authorize';
 import { ADMIN_ROLES } from '../../config/roles';
+import { activityLogger } from '../../middlewares/activityLogger';
 
 const router = Router();
 
@@ -148,6 +149,7 @@ router.put(
   '/admin/password',
   authenticate,
   authorize(...ADMIN_ROLES),
+  activityLogger,
   validate(adminPasswordSchema),
   changeAdminPassword,
 );
@@ -156,6 +158,7 @@ router.post(
   '/admin/request-password-reset',
   authenticate,
   authorize(...ADMIN_ROLES),
+  activityLogger,
   passwordResetLimiter,
   requestAdminPasswordReset,
 );
