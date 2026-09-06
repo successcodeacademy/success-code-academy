@@ -151,6 +151,34 @@ ${paragraph("If you never meant to subscribe, just ignore this email. We won't a
   return { html: shell({ heading: 'You are on the list', bodyHtml }).html, text };
 }
 
+/** Notice sent when an address is added to the internal notification list. */
+export function internalNotificationRecipientWelcome(): { html: string; text: string } {
+  const bodyHtml = `
+${greeting('there')}
+${paragraph('You have been added as an internal email notification recipient for Success Code Academy.')}
+${paragraph('You will receive internal form and admin alerts, such as new enquiries, registrations, and other website updates that need the team\'s attention.')}
+${paragraph('This is an operational email, not a marketing subscription. If you were added by mistake or no longer need these alerts, please contact Success Code Academy at +91 86004 70850 or ask the academy super administrator to remove your address.')}`;
+
+  const text = [
+    'Hi,',
+    '',
+    'You have been added as an internal email notification recipient for Success Code Academy.',
+    '',
+    "You will receive internal form and admin alerts, such as new enquiries, registrations, and other website updates that need the team's attention.",
+    '',
+    'This is an operational email, not a marketing subscription. If you were added by mistake or no longer need these alerts, please contact Success Code Academy at +91 86004 70850 or ask the academy super administrator to remove your address.',
+  ].join('\n');
+
+  return {
+    html: shell({
+      heading: 'You were added to internal alerts',
+      bodyHtml,
+      footerNote: 'You are receiving this because your address was added to the academy notification list.',
+    }).html,
+    text,
+  };
+}
+
 export function studentWelcome(params: {
   firstName: string;
   mobileNumber: string;
