@@ -56,7 +56,7 @@ export default function AuthPromptModal() {
 
   return (
     <div
-      className="admin-modal-overlay"
+      className="admin-modal-overlay auth-prompt-overlay"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) close();
       }}
@@ -87,7 +87,7 @@ export default function AuthPromptModal() {
           <div className="auth-prompt-actions">
             <button
               type="button"
-              className="app-login-submit"
+              className="admin-button auth-prompt-primary"
               onClick={() => go("/signup")}
             >
               <UserPlus size={15} aria-hidden="true" />

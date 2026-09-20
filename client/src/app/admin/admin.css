@@ -6825,7 +6825,25 @@ html[data-admin-theme]::-webkit-scrollbar-track {
 }
 
 .auth-prompt-modal {
-  width: min(400px, calc(100vw - 32px));
+  width: min(400px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+}
+
+/* Centered dialog on every viewport — never the bottom sheet. */
+.admin-modal-overlay.auth-prompt-overlay {
+  align-items: center;
+  padding: 16px;
+}
+
+/* No sheet grab-handle on a centered dialog. */
+.auth-prompt-modal .admin-modal-header::before {
+  display: none;
+}
+
+.auth-prompt-actions .admin-button {
+  white-space: normal;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -6856,6 +6874,11 @@ html[data-admin-theme]::-webkit-scrollbar-track {
 
   .public-auth-page .split-row {
     flex-direction: column;
-    gap: 0;
+    gap: 12px;
+  }
+
+  .auth-prompt-actions .admin-button {
+    width: 100%;
+    min-height: 40px;
   }
 }
