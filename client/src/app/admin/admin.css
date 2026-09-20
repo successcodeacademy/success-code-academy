@@ -6781,3 +6781,81 @@ html[data-admin-theme]::-webkit-scrollbar-track {
   .analytics-bar-fill { transition: none; }
   .analytics-kpi { transition: none; }
 }
+
+/* ---- Public auth pages (login / signup) + guest auth prompt ------- */
+.public-auth-page {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  padding: clamp(88px, 14vh, 120px) 20px 110px;
+}
+
+.public-auth-frame {
+  width: 100%;
+  max-width: 460px;
+  margin: auto;
+}
+
+.public-auth-frame-narrow {
+  max-width: 420px;
+}
+
+.public-auth-page .split-row {
+  display: flex;
+  gap: 12px;
+}
+
+.auth-prompt-copy {
+  margin: 0 0 4px;
+  color: var(--admin-text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.auth-prompt-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.auth-prompt-secondary {
+  width: 100%;
+  min-height: 36px;
+  justify-content: center;
+}
+
+.auth-prompt-modal {
+  width: min(400px, calc(100vw - 32px));
+}
+
+@media (min-width: 768px) {
+  .auth-prompt-actions {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .public-auth-page {
+    padding-top: 88px;
+    padding-right: 16px;
+    padding-bottom: 120px;
+    padding-left: 16px;
+  }
+
+  /* 16px inputs stop iOS auto-zoom; 44px targets suit thumbs. */
+  .public-auth-page .app-login-field input {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .public-auth-page .app-login-submit {
+    min-height: 44px;
+    width: 100%;
+  }
+
+  .public-auth-page .split-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

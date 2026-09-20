@@ -14,6 +14,18 @@ type LoginFailure = {
   errors?: Array<{ field?: string; message?: string }>;
 };
 
+function getReturnTo(): string {
+  try {
+    const value = new URLSearchParams(window.location.search).get("returnTo");
+    if (value && value.startsWith("/") && !value.startsWith("//")) {
+      return value;
+    }
+  } catch {
+    /* Fall through to the home page. */
+  }
+  return "/";
+}
+
 export default function StudentLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -112,7 +124,7 @@ export default function StudentLoginPage() {
         });
         window.location.replace("/admin");
       } else {
-        router.push("/");
+        router.push(getReturnTo());
       }
     } catch (caught) {
       toast.error(
@@ -125,13 +137,8 @@ export default function StudentLoginPage() {
   }
 
   return (
-    <div className="app-login" style={{ minHeight: 'calc(100vh - 80px)', display: 'flex', flexDirection: 'column', paddingTop: '120px', paddingBottom: '60px', paddingLeft: '20px', paddingRight: '20px' }}>
-      <style>{`
-        .public-shell .app-login-field input:focus-visible {
-          outline: none !important;
-        }
-      `}</style>
-      <div className="app-login-frame" style={{ width: '100%', maxWidth: '420px', margin: 'auto' }}>
+    <div className="app-login public-auth-page">
+      <div className="app-login-frame public-auth-frame public-auth-frame-narrow">
             <div className="app-login-logo">
               <Image
                 src="/images/ui/logo2.png"
@@ -222,8 +229,8 @@ export default function StudentLoginPage() {
             </form>
 
             <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '0.85rem' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Don't have an account? </span>
-              <Link href="/signup" style={{ color: 'var(--brand-primary)', fontWeight: 600 }}>
+              <span style={{ color: 'var(--text-secondary)' }}>Don&apos;t have an account? </span>
+              <Link href={`/signup${typeof window !== "undefined" ? window.location.search : ""}`} style={{ color: 'var(--brand-primary)', fontWeight: 600 }}>
                 Sign up
               </Link>
             </div>

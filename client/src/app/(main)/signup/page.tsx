@@ -26,6 +26,18 @@ export default function StudentSignupPage() {
   const [submitting, setSubmitting] = useState(false);
   const toast = useToast();
 
+  function getReturnTo(): string {
+    try {
+      const value = new URLSearchParams(window.location.search).get("returnTo");
+      if (value && value.startsWith("/") && !value.startsWith("//")) {
+        return value;
+      }
+    } catch {
+      /* Fall through to the home page. */
+    }
+    return "/";
+  }
+
   async function handleSendOtp(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
@@ -91,7 +103,7 @@ export default function StudentSignupPage() {
       window.dispatchEvent(new Event("auth-changed"));
       
       toast.success("Successfully signed up!");
-      router.push("/");
+      router.push(getReturnTo());
     } catch (caught) {
       toast.error(
         caught instanceof Error
@@ -103,23 +115,8 @@ export default function StudentSignupPage() {
   }
 
   return (
-    <div className="app-login" style={{ minHeight: 'calc(100vh - 80px)', display: 'flex', flexDirection: 'column', paddingTop: '120px', paddingBottom: '60px', paddingLeft: '20px', paddingRight: '20px' }}>
-      <style>{`
-        .public-shell .app-login-field input:focus-visible {
-          outline: none !important;
-        }
-        .split-row {
-          display: flex;
-          gap: 12px;
-        }
-        @media (max-width: 480px) {
-          .split-row {
-            flex-direction: column;
-            gap: 0;
-          }
-        }
-      `}</style>
-      <div className="app-login-frame" style={{ width: '100%', maxWidth: '460px', margin: 'auto' }}>
+    <div className="app-login public-auth-page">
+      <div className="app-login-frame public-auth-frame">
             <div className="app-login-logo">
               <Image
                 src="/images/ui/logo2.png"
@@ -260,7 +257,7 @@ export default function StudentSignupPage() {
 
                 <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '0.85rem' }}>
                   <span style={{ color: 'var(--text-secondary)' }}>Already have an account? </span>
-                  <Link href="/login" style={{ color: 'var(--brand-primary)', fontWeight: 600 }}>
+                  <Link href={`/login${typeof window !== "undefined" ? window.location.search : ""}`} style={{ color: 'var(--brand-primary)', fontWeight: 600 }}>
                     Sign in
                   </Link>
                 </div>

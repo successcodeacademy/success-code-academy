@@ -12,6 +12,7 @@ import "./admissions/admissions.css";
 import "./faq/faq.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import AuthPromptModal from "@/components/layout/AuthPromptModal";
 import WhatsAppWidget from "@/components/layout/WhatsAppWidget";
 import CookieConsent from "@/components/layout/CookieConsent";
 import { ToastProvider } from "@/components/admin/Toast";
@@ -79,6 +80,7 @@ export default function RootLayout({
           <CookieConsent />
           <LeadsDrawer />
           <LiveEditorToolbar />
+          <AuthPromptModal />
           </div>
         </LiveContentProvider>
       </EditModeProvider>

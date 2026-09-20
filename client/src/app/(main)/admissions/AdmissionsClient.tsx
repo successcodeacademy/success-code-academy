@@ -117,7 +117,12 @@ export default function AdmissionsClient({ courses = [], scholarshipPrograms = [
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editMode) return;
-    if (!isAuthenticated) return;
+    const token = localStorage.getItem("token")?.trim();
+    const savedUser = localStorage.getItem("user");
+    if (!token || !savedUser || !isAuthenticated) {
+      window.dispatchEvent(new Event("open-signin-modal"));
+      return;
+    }
     const form = e.currentTarget as HTMLFormElement;
     if (!form.checkValidity()) {
       form.reportValidity();
@@ -129,7 +134,6 @@ export default function AdmissionsClient({ courses = [], scholarshipPrograms = [
     setErrorMessage(null);
 
     try {
-      const token = localStorage.getItem("token");
       const url = hasExistingRegistration ? "/api/public/scholarships/me" : "/api/public/scholarships/register";
       const method = hasExistingRegistration ? "PUT" : "POST";
 

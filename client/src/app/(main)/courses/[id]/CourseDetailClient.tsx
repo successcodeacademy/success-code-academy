@@ -236,8 +236,9 @@ export default function CourseDetailClient({ course }: CourseDetailClientProps) 
     const token = localStorage.getItem("token")?.trim();
     const savedUser = localStorage.getItem("user");
     if (!token || !savedUser) {
-      setSubmissionError("Please sign in before submitting a course enquiry.");
-      setFormStatus("error");
+      setSubmissionError("");
+      setFormStatus("idle");
+      window.dispatchEvent(new Event("open-signin-modal"));
       return;
     }
 
